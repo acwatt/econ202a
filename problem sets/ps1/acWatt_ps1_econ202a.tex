@@ -29,15 +29,64 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                Problem 1                    %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\xdot{\dot X} \def\ydot{\dot Y} \def\zdot{\dot Z}
+\def\kdot{\dot k}
 \section*{Problem 1}
-\problem{Problem name}{
-    Problem description
+\problem{Basic Properties of Growth Rates: Romer 1.1}{
+    Use the fact that the growth rate of a variable
+equals the time derivative of its log to show:
+    \begin{enumerate}[label=(\alph*)]
+    \item The growth rate of the product of two variables equals the sum of their growth rates. That is, if $Z(t)= X(t)Y(t)$, then $\zdot(t)/Z(t) = [\xdot(t)/X(t)] + [\ydot(t)/Y(t)]$.
+    \end{enumerate} 
 }
 
-\begin{align} 
+\begin{align*} 
     \intertext{stuff}
     y&=x
-\end{align}
+\end{align*}
+
+
+
+%%%%%%%%%%%%%%%%%
+%     Part b    %
+%%%%%%%%%%%%%%%%%
+\problem{}{
+    \begin{enumerate}[label=(\alph*)]
+    \setcounter{enumi}{1}
+    \item The growth rate of the ratio of two variables equals the difference of their growth rates. That is, if $Z(t)= X(t)/Y(t)$, then $\dot Z(t)/Z(t) = [\xdot(t)/X(t)]-[\ydot(t)/Y(t)]$.
+    \end{enumerate} 
+}
+
+\begin{align*} 
+    \intertext{stuff}
+    y&=x
+\end{align*}
+
+
+
+%%%%%%%%%%%%%%%%%
+%     Part c    %
+%%%%%%%%%%%%%%%%%
+\problem{}{
+    \begin{enumerate}[label=(\alph*)]
+    \setcounter{enumi}{2}
+    \item If $Z(t) = \alpha X(t)^\alpha$, then $\zdot(t)/Z(t) = \alpha \xdot(t)/X(t)$.
+    \end{enumerate} 
+}
+
+\begin{align*} 
+    \intertext{stuff}
+    y&=x
+\end{align*}
+
+
+
+
+
+
+
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -45,13 +94,140 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \section*{Problem 2}
-\problem{Problem name}{
-    Problem description
+\def\slope{\text{Slope}} 
+\problem{Constant-Elasticity-of-Substitution Production Functions}{
+    Consider the production function
+    \begin{equation}
+    Y = F(K,L) = A[aK^\phi + (1-a) L^\phi]^{1/\phi}
+    \label{eq:F2}
+    \end{equation}
+    where $0<a<1$ and $\phi<1$.
+    \vspace{1em}
+
+    Recall that the elasticity of substitution between capital and labor is the curvature of the isoquants of the production function. The slope of an isoquant is
+    \begin{equation*}
+        \slope = \frac{\partial F(\cdot)/\partial K}{\partial F(\cdot)/\partial L}
+    \end{equation*}
+
+    The elasticity is then
+    \begin{equation*}
+    \left[
+        \frac{\partial (\slope)}{\partial (L/K)}
+        \frac{L/K}{\slope}
+    \right]^{-1}
+    \end{equation*}
+
+    \begin{enumerate}[label=(\alph*)]
+        \item Show that the elasticity of subtitution of the production function \eqref{eq:F2} is constant and equal to $1/(1-\phi)$.
+    \end{enumerate} 
 }
+
 \begin{align} 
     \intertext{stuff}
     y&=x
 \end{align}
+
+
+
+%%%%%%%%%%%%%%%%%
+%     Part b    %
+%%%%%%%%%%%%%%%%%
+\problem{}{
+    \begin{enumerate}[label=(\alph*)]
+    \setcounter{enumi}{1}
+    \item Show that when the elasticity of substitution approaches 1 ($\phi\to 0$), this production function approaches the Cobb-Douglas form $Y = (\text{constant})K^\alpha L^{1-\alpha}$.
+    
+    (Hint: You will need to use l’Hopital’s rule.)
+    \end{enumerate} 
+}
+
+\begin{align*} 
+    \intertext{stuff}
+    y&=x
+\end{align*}
+
+
+
+%%%%%%%%%%%%%%%%%
+%     Part c    %
+%%%%%%%%%%%%%%%%%
+\problem{}{
+    \begin{enumerate}[label=(\alph*)]
+    \setcounter{enumi}{2}
+    \item Divide through equation \eqref{eq:F2} by L and rewrite the production function in terms of output per person $y$ and capital per person $k$. Let’s refer to this production function as $y = f(K)$.
+    \end{enumerate} 
+}
+
+\begin{align*} 
+    \intertext{stuff}
+    y&=x
+\end{align*}
+
+
+
+%%%%%%%%%%%%%%%%%
+%     Part d    %
+%%%%%%%%%%%%%%%%%
+\problem{}{
+    \begin{enumerate}[label=(\alph*)]
+    \setcounter{enumi}{3}
+    \item Derive expressions for $f'(k)$ and $f(k)/k$.
+    \end{enumerate} 
+}
+
+\begin{align*} 
+    \intertext{stuff}
+    y&=x
+\end{align*}
+
+
+
+%%%%%%%%%%%%%%%%%
+%     Part e    %
+%%%%%%%%%%%%%%%%%
+\problem{}{
+    \begin{enumerate}[label=(\alph*)]
+    \setcounter{enumi}{4}
+    \item Consider the case where capital and labor are gross substitutes ($0 < \phi < 1$). Does the production function satisfy the Inada conditions?
+    \end{enumerate} 
+}
+
+\begin{align*} 
+    \intertext{stuff}
+    y&=x
+\end{align*}
+
+
+
+%%%%%%%%%%%%%%%%%
+%     Part f    %
+%%%%%%%%%%%%%%%%%
+\problem{}{
+    \begin{enumerate}[label=(\alph*)]
+    \setcounter{enumi}{4}
+    \item Recall that
+    \[\frac{\kdot}{k} = \frac{sf(k)}{k} - (n+\delta)\]
+    where $s$ is the savings rate, $n$ is the population growth rate, and $\delta$ is the depreciation rate of capital.
+    \vspace{1em}
+    
+    Can capital accumulation result in sustained growth in this economy given a constant savings rate?
+    (Hint: Plot $sf(k)/k$ and $(n + \delta)$ as a function of $k$ on the same figure.)
+    \end{enumerate} 
+}
+
+\begin{align*} 
+    \intertext{stuff}
+    y&=x
+\end{align*}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -60,14 +236,83 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \section*{Problem 3}
-\problem{Problem name}{
-    Problem description
+\problem{The Harrod-Domar Model}{
+    Prior to the development of the Solow model, work on development and growth often used a Leontief production function
+    \begin{equation}
+        Y = F(K,L) = min(AK, BL),
+        \label{eq:F3}
+    \end{equation}
+    where $A=0$ and $B=0$. As we discussed above, this corresponds to a CES production function with $\phi\to -\infty$. Well-known papers to use this type of production function are Harrod (1939) and Domar (1946). Growth models that use this production function have since usually been referred to as Harrod-Domar models. Harrod and Domar predicted that capitalist economies would suffer from persistent problems of unemployment of either labor or machines. We now explore how this conclusion follows from the production function \eqref{eq:F3}.
+    \vspace{1em}
+
+    \begin{enumerate}[label=(\alph*)]
+    \item Rewrite the production function \eqref{eq:F3} in terms of per capita output $y$ and capital per capita $k$. Plot the resulting production function as a function of $k$. Also plot the marginal product of capital as a function of $k$.
+    \end{enumerate} 
 }
 
 \begin{align} 
     \intertext{stuff}
     y&=x
 \end{align}
+
+
+
+%%%%%%%%%%%%%%%%%
+%     Part b    %
+%%%%%%%%%%%%%%%%%
+\problem{}{
+    \begin{enumerate}[label=(\alph*)]
+    \setcounter{enumi}{1}
+    \item Recall that with a constant savings rate $s$ we have
+        \[\frac{\kdot}{k} = \frac{sf(k)}{k} - (n+\delta)\]
+    Consider first the case where $sA < (n+\delta)$. Plot $sf(k)/k$ and $n+\delta$ as a function of $k$. Discuss the dynamics of this economy starting from some initial capital stock $k_0$. Comment in particular on the degree of unemployment of labor in the long run in such an economy.
+    \end{enumerate} 
+}
+
+\begin{align*} 
+    \intertext{stuff}
+    y&=x
+\end{align*}
+
+
+
+%%%%%%%%%%%%%%%%%
+%     Part c    %
+%%%%%%%%%%%%%%%%%
+\problem{}{
+    \begin{enumerate}[label=(\alph*)]
+    \setcounter{enumi}{2}
+    \item Now consider the case were $sA > (n+\delta)$. Again, plot $sf(k)/k$ and $n+\delta$ as a function of $k$. Discuss the dynamics of this economy starting from some initial capital stock $k_0$. Comment on the degree of unemployment of labor in the long run as well as the possible idleness of capital in the long run.
+    \end{enumerate} 
+}
+
+\begin{align*} 
+    \intertext{stuff}
+    y&=x
+\end{align*}
+
+
+
+%%%%%%%%%%%%%%%%%
+%     Part d    %
+%%%%%%%%%%%%%%%%%
+\problem{}{
+    \begin{enumerate}[label=(\alph*)]
+    \setcounter{enumi}{3}
+    \item Is it possible for both capital and labor to be fully employed in a Harrod-Domar economy in the long run?
+    \end{enumerate} 
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
