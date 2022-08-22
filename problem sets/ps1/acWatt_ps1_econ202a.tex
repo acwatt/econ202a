@@ -30,7 +30,7 @@
 %                Problem 1                    %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\xdot{\dot X} \def\ydot{\dot Y} \def\zdot{\dot Z}
-\def\kdot{\dot k}
+\def\kdot{\dot k} \def\ddt{\frac{d}{dt}}
 \section*{Problem 1}
 \problem{Basic Properties of Growth Rates: Romer 1.1}{
     Use the fact that the growth rate of a variable
@@ -41,8 +41,12 @@ equals the time derivative of its log to show:
 }
 
 \begin{align*} 
-    \intertext{stuff}
-    y&=x
+    \intertext{Assuming $Z=XY$ and $X,Y$ are both univariate functions of $t$, then}
+    \frac{\zdot}{Z} &= \ddt \ln Z \\
+        &= \ddt \ln(XY) \\
+        &= \ddt (\ln X + \ln Y) \\
+        &= \ddt\ln X + \ddt\ln Y \\
+        &= \frac{\xdot}{X} + \frac{\ydot}{Y}
 \end{align*}
 
 
@@ -58,12 +62,16 @@ equals the time derivative of its log to show:
 }
 
 \begin{align*} 
-    \intertext{stuff}
-    y&=x
+    \intertext{Assuming $Z=X/Y$ and $X,Y$ are both univariate functions of $t$, then}
+    \frac{\zdot}{Z} &= \ddt \ln Z \\
+        &= \ddt \ln(X/Y) \\
+        &= \ddt (\ln X - \ln Y) \\
+        &= \ddt\ln X - \ddt\ln Y \\
+        &= \frac{\xdot}{X} - \frac{\ydot}{Y}
 \end{align*}
 
 
-
+\newpage
 %%%%%%%%%%%%%%%%%
 %     Part c    %
 %%%%%%%%%%%%%%%%%
@@ -75,9 +83,14 @@ equals the time derivative of its log to show:
 }
 
 \begin{align*} 
-    \intertext{stuff}
-    y&=x
+    \intertext{Assuming $Z=\alpha X^\alpha$ and $X$ is a univariate function of $t$, then}
+    \frac{\zdot}{Z} &= \ddt \ln Z \\
+        &= \ddt \ln(\alpha X^\alpha) \\
+        &= \ddt (\ln\alpha + \alpha\ln X) \\
+        &= \ddt\ln\alpha + \alpha\ddt\ln X \\
+        &= 0 + \alpha\frac{\xdot}{X}
 \end{align*}
+
 
 
 
@@ -122,10 +135,31 @@ equals the time derivative of its log to show:
     \end{enumerate} 
 }
 
-\begin{align} 
-    \intertext{stuff}
-    y&=x
-\end{align}
+\def\dfdk{\frac{\partial F}{\partial K}}
+\def\dfdl{\frac{\partial F}{\partial L}}
+\begin{align*} 
+    \intertext{First, let's find both partial derivatives of \eqref{eq:F2}}
+    \dfdk &= A\frac{1}{\phi}[...]^{1/\phi-1}aK^{\phi-1} \\
+    \dfdl &= A\frac{1}{\phi}[...]^{1/\phi-1}(1-a)L^{\phi-1}
+\intertext{So, with some cancellation, the slope is then}
+    \slope &= \dfrac{\frac{\partial F}{\partial K}}{\frac{\partial F}{\partial L}} \\
+        &= \frac{a}{1-a}\left(\frac{K}{L}\right)^{\phi-1} \\
+        &= \frac{a}{1-a}\left(\frac{L}{K}\right)^{1-\phi} 
+\intertext{Then }
+    \frac{\partial (\slope)}{\partial (L/K)}
+    &= \frac{a}{1-a}(1-\phi)\left(\frac{L}{K}\right)^{-\phi} \\
+    &= (1-\phi)\left(\frac{L}{K}\right)^{-1}\slope
+\intertext{And finally, the elasticity of substitution between capital and labor is}
+\left[
+    \frac{\partial (\slope)}{\partial (L/K)}
+    \frac{L/K}{\slope}
+\right]^{-1}
+    &= \left[
+        (1-\phi)\left(\frac{L}{K}\right)^{-1}\slope
+        \frac{L/K}{\slope}
+        \right]^{-1}\\
+    &= (1-\phi)^{-1}
+\end{align*}
 
 
 
