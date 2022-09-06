@@ -373,7 +373,16 @@ f(k) &= \begin{cases}
 So the plot looks like
 \includegraphics[width=0.4\textwidth]{3b}
 
-So if $n+\delta < \frac{sf(k)}{k}$
+So if $sA < (n+\delta)$, there is no crossing point and no steady state in capital per capita. 
+
+\begin{align*}
+    n+\delta &> \frac{sf(k)}{k}\ \forall k \\
+    &\implies \frac{\kdot}{k} <0\ \forall k \\
+     &\implies k\to 0 \text{ in the long run, from any $k_0$}
+\end{align*}
+and $\dfrac{\kdot}{k}$ is larger for larger $k$, so the rate of shrinkage of the capital stock starts off larger and slows down until $\dfrac{\kdot}{k}=sA-(n+\delta)<0$ and stays constant until $\kdot=0$.
+
+$\implies$ we have long run total unemployment (since there will be no capital to use and labor and capital are compliments in production).
 
 %%%%%%%%%%%%%%%%%
 %     Part c    %
@@ -384,13 +393,17 @@ So if $n+\delta < \frac{sf(k)}{k}$
     \item Now consider the case were $sA > (n+\delta)$. Again, plot $sf(k)/k$ and $n+\delta$ as a function of $k$. Discuss the dynamics of this economy starting from some initial capital stock $k_0$. Comment on the degree of unemployment of labor in the long run as well as the possible idleness of capital in the long run.
     \end{enumerate} 
 }
-
-\begin{align*} 
-    \intertext{stuff}
-    y&=x
-\end{align*}
 \includegraphics[width=0.4\textwidth]{3c}
 
+\begin{align*} 
+    \intertext{Since $s,\delta,n \in (0,1)$,}
+    sA &> n\delta \implies \frac{sA}{n+\delta} >1
+    \intertext{and since}
+    k^* &= \frac{sB}{n+\delta}
+    \intertext{Then}
+    f(k^*) &= \min\left(A\frac{sB}{n+\delta}, B\right) = B\frac{sA}{n+\delta} > B
+\end{align*}
+So there is a greater amount of capital employed than labor in the long run, meaning there will be full employment of labor, but some unused captial (or underutilized).
 
 %%%%%%%%%%%%%%%%%
 %     Part d    %
@@ -402,6 +415,7 @@ So if $n+\delta < \frac{sf(k)}{k}$
     \end{enumerate} 
 }
 
+It would only be possible to fully employ both labor and capital if $ k^* &= \dfrac{B}{A}$ exactly, but since $k^*$ depends on continuous fundemental parameters $n,\delta,s$, $ k^* &= \dfrac{B}{A}$ would happen with probability zero (meaning no, it is not possible to have fully employed labor and captial in the Harrod-Domar model).
 
 
 
