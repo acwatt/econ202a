@@ -7,7 +7,7 @@
 \usepackage{xfrac} % for sfrac
 \usepackage{parskip}
 % Colour table cells
-\usepackage[table]{xcolor}
+\usepackage[table, dvipsnames]{xcolor}
 \usepackage{graphicx}
 \usepackage{placeins} % \FloatBarrier
 \usepackage{wrapfig}
@@ -57,12 +57,20 @@
 %%%%% Section numbers and bookmark
 % can use \section{} and it will not have a 
 % number but will still add to bookmarks
+% \makeatletter
+% \renewcommand\@seccntformat[1]{}
+% \makeatother
+
+% Custom section numbering / naming
+\usepackage{titlesec}
+\titleformat{\section}
+{\normalfont\Large\bfseries}{Lecture \thesection:}{0.5em}{}
+
+% Get current section number and name for page header
+\usepackage{nameref}
 \makeatletter
-\renewcommand\@seccntformat[1]{}
+\newcommand*{\currentname}{Lec. \@currentlabel ~ \@currentlabelname}
 \makeatother
-
-
-
 
 
 
@@ -82,9 +90,10 @@
 % \setlength{\headheight}{8.2pt}    
 \pagestyle{fancy}
 \fancyhf{}
-\lhead{Econ 202A, Fall 2022}
-\rhead{Aaron C. Watt}
+\lhead{Econ 202A (2022)}
+\rhead{AC Watt}
 \cfoot{\bfseries\thepage}
+\chead{\currentname}
 % \lfoot{\copyright ACWatt 2020}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -167,17 +176,54 @@
   \endgroup
 }
 
+
+
+
+
+
+
+
+
+
+
 %%%%%%%%%%%%%%%%%%%%
 %   color boxes    %
 %%%%%%%%%%%%%%%%%%%%
-\newcommand{\problem}[2]
+\newcounter{mycounter}[section]
+
+\newcommand{\researchidea}[2]
 {
     \begin{tcolorbox}[colback=gray!10!white,
-        colframe=gray!75!black,
-        title=#1]
+        colframe=OliveGreen!75!black,
+        title=\refstepcounter{mycounter}
+            \textbf{Research Idea~\thesection.\themycounter} 
+            \hspace{1em}#1]
         #2
     \end{tcolorbox}
 }
+\newcommand{\definition}[2]
+{
+    \begin{tcolorbox}[colback=gray!10!white,
+        colframe=black!75!black,
+        title=\refstepcounter{mycounter}
+            \textbf{Definition~\thesection.\themycounter} 
+            \hspace{1em}#1]
+        #2
+    \end{tcolorbox}
+}
+\newcommand{\theorem}[2]
+{
+    \begin{tcolorbox}[colback=gray!10!white,
+        colframe=Tan!75!black,
+        title=\refstepcounter{mycounter}
+            \textbf{Theorem~\thesection.\themycounter} 
+            \hspace{1em}#1]
+        #2
+    \end{tcolorbox}
+}
+
+
+
 
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
@@ -205,12 +251,5 @@
 }
 
 \lstset{style=mystyle}
-
-
-%%%%%%%%%%%%%%%%%%%%
-%   color boxes    %
-%%%%%%%%%%%%%%%%%%%%
-% set vertical distance between equations
-% \setlength{\jot}{2em}
 
 
