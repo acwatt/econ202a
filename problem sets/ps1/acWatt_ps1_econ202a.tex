@@ -359,11 +359,21 @@ In this version, there is no single crossing point because $\frac{sf(k)}{k}$ asy
 }
 
 \begin{align*} 
-    \intertext{stuff}
-    y&=x
+    \intertext{Since}
+f(k) &= \begin{cases}
+        Ak & \text{if } Ak<B \\
+        B & \text{if } Ak>B
+    \end{cases}
+    \intertext{Then}
+\frac{sf(k)}{k} &= \begin{cases}
+        sA & \text{if } Ak<B \\
+        \dfrac{sB}{k} & \text{if } Ak>B
+    \end{cases}
 \end{align*}
+So the plot looks like
 \includegraphics[width=0.4\textwidth]{3b}
 
+So if $n+\delta < \frac{sf(k)}{k}$
 
 %%%%%%%%%%%%%%%%%
 %     Part c    %
