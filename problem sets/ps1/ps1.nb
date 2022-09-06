@@ -10,112 +10,63 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[      4536,        135]
-NotebookOptionsPosition[      3736,        113]
-NotebookOutlinePosition[      4142,        129]
-CellTagsIndexPosition[      4099,        126]
+NotebookDataLength[      2516,         81]
+NotebookOptionsPosition[      1993,         63]
+NotebookOutlinePosition[      2438,         80]
+CellTagsIndexPosition[      2395,         77]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
 Notebook[{
-Cell["", "Problem 2",
- CellChangeTimes->{{3.870135227296644*^9, 
-  3.870135232832478*^9}},ExpressionUUID->"faa705c9-09cb-4b07-b8db-\
-4ee6d00617e8"],
 
 Cell[CellGroupData[{
-
-Cell["Problem 2", "Section",
- CellChangeTimes->{{3.87013524041702*^9, 
-  3.8701352440401044`*^9}},ExpressionUUID->"43d64dee-0c4d-4c53-9b6c-\
-fe6d1395f2a4"],
-
-Cell[CellGroupData[{
-
 Cell[BoxData[{
- RowBox[{"Clear", "[", 
-  RowBox[{"K", ",", "L"}], "]"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"F", "[", 
-   RowBox[{"K_", ",", "L_", ",", "\[Phi]_"}], "]"}], ":=", 
+   RowBox[{"K_", ",", "L_"}], "]"}], ":=", 
   SuperscriptBox[
-   RowBox[{"A", "[", 
+   RowBox[{"A", " ", "[", 
     RowBox[{
      RowBox[{"a", " ", 
       SuperscriptBox["K", "\[Phi]"]}], "+", 
      RowBox[{
       RowBox[{"(", 
-       RowBox[{"1", "-", "a"}], ")"}], 
+       RowBox[{"1", "-", "a"}], ")"}], " ", 
       SuperscriptBox["L", "\[Phi]"]}]}], "]"}], 
    RowBox[{"1", "/", "\[Phi]"}]]}], "\[IndentingNewLine]", 
- RowBox[{"F", "[", 
-  RowBox[{"K", ",", "L", ",", "\[Phi]"}], "]"}], "\[IndentingNewLine]", 
- RowBox[{"Limit", "[", 
+ RowBox[{
+  RowBox[{"f", "[", "k_", "]"}], ":=", 
+  RowBox[{"F", "[", 
+   RowBox[{"k", ",", "1"}], "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"Assuming", "[", 
   RowBox[{
-   RowBox[{"F", "[", 
-    RowBox[{"k", ",", "L", ",", "\[Phi]"}], "]"}], ",", 
-   RowBox[{"\[Phi]", "->", "0"}], ",", 
-   RowBox[{"Assumptions", "->", 
-    RowBox[{
-     RowBox[{"k", ">", "0"}], "&&", " ", 
-     RowBox[{"L", ">", "0"}], "&&", 
-     RowBox[{"0", "<", "a", "<", "1"}]}]}], ",", 
-   RowBox[{"Direction", "->", "1"}]}], "]"}]}], "Input",
- CellChangeTimes->{{3.870135247417737*^9, 3.8701353775308185`*^9}, {
-  3.8701354146611176`*^9, 3.8701354628385715`*^9}, {3.870135520249277*^9, 
-  3.8701356102948537`*^9}, {3.870135680495778*^9, 3.870135700098675*^9}},
- CellLabel->"In[36]:=",ExpressionUUID->"ead64552-4057-433d-a5d2-75dc4521fb60"],
+   RowBox[{
+    RowBox[{"0", "<", "a", "<", "1"}], " ", "&&", " ", 
+    RowBox[{"0", "<", "\[Phi]", "<", "1"}]}], ",", " ", 
+   RowBox[{"f", "[", "0", "]"}]}], "]"}], "\[IndentingNewLine]"}], "Input",
+ CellChangeTimes->{{3.871047718287445*^9, 3.8710479127951193`*^9}, {
+  3.871047986924321*^9, 3.8710480179129066`*^9}, {3.87104854913155*^9, 
+  3.871048692526749*^9}},
+ CellLabel->"In[15]:=",ExpressionUUID->"bab9d33f-ef91-4764-8019-7547e7fa45a0"],
 
 Cell[BoxData[
  SuperscriptBox[
   RowBox[{"A", "[", 
-   RowBox[{
-    RowBox[{"a", " ", 
-     SuperscriptBox["K", "\[Phi]"]}], "+", 
+   RowBox[{"1", "-", "a", "+", 
     RowBox[{
-     RowBox[{"(", 
-      RowBox[{"1", "-", "a"}], ")"}], " ", 
-     SuperscriptBox["L", "\[Phi]"]}]}], "]"}], 
+     SuperscriptBox["0", "\[Phi]"], " ", "a"}]}], "]"}], 
   FractionBox["1", "\[Phi]"]]], "Output",
- CellChangeTimes->{
-  3.8701353822424755`*^9, {3.870135444101963*^9, 3.8701354636758747`*^9}, {
-   3.8701355550133257`*^9, 3.870135570164501*^9}, 3.870135610629179*^9, {
-   3.8701356969108953`*^9, 3.870135700420782*^9}},
- CellLabel->"Out[38]=",ExpressionUUID->"f2741866-1b3c-4589-95b9-56c14d45703a"],
-
-Cell[BoxData[
- RowBox[{"Limit", "[", 
-  RowBox[{
-   SuperscriptBox[
-    RowBox[{"A", "[", 
-     RowBox[{
-      RowBox[{"a", " ", 
-       SuperscriptBox["k", "\[Phi]"]}], "+", 
-      RowBox[{
-       RowBox[{"(", 
-        RowBox[{"1", "-", "a"}], ")"}], " ", 
-       SuperscriptBox["L", "\[Phi]"]}]}], "]"}], 
-    FractionBox["1", "\[Phi]"]], ",", 
-   RowBox[{"\[Phi]", "\[Rule]", "0"}], ",", 
-   RowBox[{"Assumptions", "\[Rule]", 
-    RowBox[{
-     RowBox[{"k", ">", "0"}], "&&", 
-     RowBox[{"L", ">", "0"}], "&&", 
-     RowBox[{"0", "<", "a", "<", "1"}]}]}], ",", 
-   RowBox[{"Direction", "\[Rule]", "1"}]}], "]"}]], "Output",
- CellChangeTimes->{
-  3.8701353822424755`*^9, {3.870135444101963*^9, 3.8701354636758747`*^9}, {
-   3.8701355550133257`*^9, 3.870135570164501*^9}, 3.870135610629179*^9, {
-   3.8701356969108953`*^9, 3.870135700534851*^9}},
- CellLabel->"Out[39]=",ExpressionUUID->"3b883fc8-19d5-450f-bd0d-0da4e402a01b"]
-}, Open  ]]
+ CellChangeTimes->{{3.8710485521634045`*^9, 3.8710485595841036`*^9}, 
+   3.8710486934052505`*^9},
+ CellLabel->"Out[17]=",ExpressionUUID->"db5052c4-bdc3-4173-8dd4-70dbac46761b"]
 }, Open  ]]
 },
-WindowSize->{808.5, 624.75},
-WindowMargins->{{Automatic, 190.5}, {42, Automatic}},
+WindowSize->{1440., 741.75},
+WindowMargins->{{-6, Automatic}, {Automatic, -6}},
+TaggingRules-><|"TryRealOnly" -> False|>,
 FrontEndVersion->"13.1 for Microsoft Windows (64-bit) (June 16, 2022)",
 StyleDefinitions->"Default.nb",
-ExpressionUUID->"898b5677-63ef-4627-80ea-ed5676018403"
+ExpressionUUID->"7fd229a5-e02b-43cc-9b97-2fed4b95a168"
 ]
 (* End of Notebook Content *)
 
@@ -128,16 +79,13 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[558, 20, 147, 3, 22, "Problem 2",ExpressionUUID->"faa705c9-09cb-4b07-b8db-4ee6d00617e8"],
 Cell[CellGroupData[{
-Cell[730, 27, 155, 3, 67, "Section",ExpressionUUID->"43d64dee-0c4d-4c53-9b6c-fe6d1395f2a4"],
-Cell[CellGroupData[{
-Cell[910, 34, 1268, 32, 88, "Input",ExpressionUUID->"ead64552-4057-433d-a5d2-75dc4521fb60"],
-Cell[2181, 68, 596, 15, 44, "Output",ExpressionUUID->"f2741866-1b3c-4589-95b9-56c14d45703a"],
-Cell[2780, 85, 928, 24, 70, "Output",ExpressionUUID->"3b883fc8-19d5-450f-bd0d-0da4e402a01b"]
-}, Open  ]]
+Cell[580, 22, 1021, 27, 88, "Input",ExpressionUUID->"bab9d33f-ef91-4764-8019-7547e7fa45a0"],
+Cell[1604, 51, 373, 9, 44, "Output",ExpressionUUID->"db5052c4-bdc3-4173-8dd4-70dbac46761b"]
 }, Open  ]]
 }
 ]
 *)
+
+(* End of internal cache information *)
 
