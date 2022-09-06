@@ -54,7 +54,7 @@ equals the time derivative of its log to show:
 %%%%%%%%%%%%%%%%%
 %     Part b    %
 %%%%%%%%%%%%%%%%%
-\problem{}{
+\newpage\problem{}{
     \begin{enumerate}[label=(\alph*)]
     \setcounter{enumi}{1}
     \item The growth rate of the ratio of two variables equals the difference of their growth rates. That is, if $Z(t)= X(t)/Y(t)$, then $\dot Z(t)/Z(t) = [\xdot(t)/X(t)]-[\ydot(t)/Y(t)]$.
@@ -75,7 +75,7 @@ equals the time derivative of its log to show:
 %%%%%%%%%%%%%%%%%
 %     Part c    %
 %%%%%%%%%%%%%%%%%
-\problem{}{
+\newpage\problem{}{
     \begin{enumerate}[label=(\alph*)]
     \setcounter{enumi}{2}
     \item If $Z(t) = \alpha X(t)^\alpha$, then $\zdot(t)/Z(t) = \alpha \xdot(t)/X(t)$.
@@ -174,27 +174,43 @@ equals the time derivative of its log to show:
     (Hint: You will need to use l’Hopital’s rule.)
     \end{enumerate} 
 }
-
+\def\plim{\lim\limits_{\phi\to 0}}
+\def\ddp{\dfrac{\partial}{\partial \phi}}
+\def\dgdp{\dfrac{\partial\gamma}{\partial \phi}}
 \begin{align*} 
-    \intertext{stuff}
-    y&=x
+    \intertext{Because $\ln(\cdot)$ is monotone and we expect the output to always be positive, we just need to show that $\ln(F)$ is equal to the log form of a Cobb-Douglas in the limit:}
+    \text{Let } \gamma &= aK^\phi + (1-a) L^\phi \\
+    \text{Then } \dgdp &= aK^\phi\ln K + (1-a) L^\phi \ln L \\
+    \text{and } \ln F &= \ln A + \frac{1}{\phi} \ln \gamma \\[1em]
+    \plim\ln \frac{F}{A} &= 
+        \dfrac{\plim\ddp\ln\gamma}{\plim\ddp\phi} \\[1em]
+        &=\dfrac{\plim\dfrac{1}{\gamma}\ddp\gamma}{1} \\[1em]
+        &=\plim\frac{aK^\phi\ln K + (1-a) L^\phi \ln L}{aK^\phi + (1-a) L^\phi} \\[1em]
+        &=\frac{a\ln K + (1-a)\ln L}{a + 1 - a} \\[.5em]
+        &=\ln [K^a L^{1-a}]
+    \intertext{Which implies}
+    \plim F &= A K^a L^{1-a}
 \end{align*}
 
 
 
 %%%%%%%%%%%%%%%%%
 %     Part c    %
-%%%%%%%%%%%%%%%%%
+ %%%%%%%%%%%%%%%%% \newpage
+\newpage
+\def\invphi{\sfrac{1}{\phi}}
 \problem{}{
     \begin{enumerate}[label=(\alph*)]
     \setcounter{enumi}{2}
-    \item Divide through equation \eqref{eq:F2} by L and rewrite the production function in terms of output per person $y$ and capital per person $k$. Let’s refer to this production function as $y = f(K)$.
+    \item Divide through equation \eqref{eq:F2} by L and rewrite the production function in terms of output per person $y$ and capital per person $k$. Let’s refer to this production function as $y = f(k)$.
     \end{enumerate} 
 }
 
 \begin{align*} 
-    \intertext{stuff}
-    y&=x
+    y&= f(k) \\
+    &= \frac{F}{L} \\
+    &= A\left[ \frac{1}{L^\phi}\Big(aK^\phi + (1-a) L^\phi \Big) \right]^\invphi \\
+    &= A[ak^\phi + (1-a)]^\invphi
 \end{align*}
 
 
@@ -202,7 +218,7 @@ equals the time derivative of its log to show:
 %%%%%%%%%%%%%%%%%
 %     Part d    %
 %%%%%%%%%%%%%%%%%
-\problem{}{
+\newpage\problem{}{
     \begin{enumerate}[label=(\alph*)]
     \setcounter{enumi}{3}
     \item Derive expressions for $f'(k)$ and $f(k)/k$.
@@ -210,8 +226,13 @@ equals the time derivative of its log to show:
 }
 
 \begin{align*} 
-    \intertext{stuff}
-    y&=x
+    \frac{f(k)}{k} &= \frac{A}{k}[ak^\phi + (1-a)]^\invphi \\
+        &= A[a + (1-a)k^{-\phi}]^\invphi  \\[2em]
+    f'(k) &= A\frac{1}{\phi}[ak^\phi + (1-a)]^{\invphi-1}a\phi k^{\phi-1} \\
+        &= \frac{Aa[ak^\phi + (1-a)]^{\invphi-1}}{k^{1-\phi}} \\
+        &= Aa[a + (1-a)k^{-\phi}]^{\invphi-1} \\[2em]
+    \intertext{Note that}
+    f'(k) &= A^\phi a\left(\frac{f(k)}{k}\right)^{1-\phi}
 \end{align*}
 
 
@@ -219,7 +240,7 @@ equals the time derivative of its log to show:
 %%%%%%%%%%%%%%%%%
 %     Part e    %
 %%%%%%%%%%%%%%%%%
-\problem{}{
+\newpage\problem{}{
     \begin{enumerate}[label=(\alph*)]
     \setcounter{enumi}{4}
     \item Consider the case where capital and labor are gross substitutes ($0 < \phi < 1$). Does the production function satisfy the Inada conditions?
@@ -227,8 +248,20 @@ equals the time derivative of its log to show:
 }
 
 \begin{align*} 
-    \intertext{stuff}
-    y&=x
+    \intertext{Assume $\phi\in(0,1)$. First consider the limit as $k\to 0$: }
+    \lim_{k\to 0}f'(k) &= \lim_{k\to 0}\frac{Aa[ak^\phi + (1-a)]^{\invphi-1}}{k^{1-\phi}}  = \infty
+    \intertext{so the first Inada conditions is met. Let's now consider the limit as $k\to\infty$. Using the relationship between $f'$ and $f/k$ from the last problem, we have:}
+    \lim_{k\to\infty}f'(k) 
+        &= \lim_{k\to\infty}A^\phi a\left(\frac{f(k)}{k}\right)^{1-\phi}\\
+        &= A^\phi a\left(\lim_{k\to\infty}\frac{f(k)}{k}\right)^{1-\phi}\\[1em]
+    \lim_{k\to\infty}\frac{f(k)}{k}
+        &=  \lim_{k\to\infty} A[a + (1-a)k^{-\phi}]^\invphi \\
+        &=   A[a + (1-a)\lim_{k\to\infty}k^{-\phi}]^\invphi \\
+        &=   Aa^\invphi \\
+        &\neq 0
+    \intertext{And because $\phi\in(0,1)$,}
+    \implies \lim_{k\to\infty}f'(k) &\neq 0
+    \intertext{So this production function does not satisfy the Inada conditions.}
 \end{align*}
 
 
@@ -236,9 +269,9 @@ equals the time derivative of its log to show:
 %%%%%%%%%%%%%%%%%
 %     Part f    %
 %%%%%%%%%%%%%%%%%
-\problem{}{
+\newpage\problem{}{
     \begin{enumerate}[label=(\alph*)]
-    \setcounter{enumi}{4}
+    \setcounter{enumi}{5}
     \item Recall that
     \[\frac{\kdot}{k} = \frac{sf(k)}{k} - (n+\delta)\]
     where $s$ is the savings rate, $n$ is the population growth rate, and $\delta$ is the depreciation rate of capital.
@@ -249,10 +282,10 @@ equals the time derivative of its log to show:
     \end{enumerate} 
 }
 
-\begin{align*} 
-    \intertext{stuff}
-    y&=x
-\end{align*}
+Note from the last problem that $\lim_{k\to\infty}\frac{sf(k)}{k} =sAa^\invphi>0$. So in the case where $n+\delta > sAa^\invphi$, the plot would look like.
+
+\includegraphics[width=\mywidth\textwidth]{}
+
 
 
 
@@ -294,7 +327,7 @@ equals the time derivative of its log to show:
 %%%%%%%%%%%%%%%%%
 %     Part b    %
 %%%%%%%%%%%%%%%%%
-\problem{}{
+\newpage\problem{}{
     \begin{enumerate}[label=(\alph*)]
     \setcounter{enumi}{1}
     \item Recall that with a constant savings rate $s$ we have
@@ -313,7 +346,7 @@ equals the time derivative of its log to show:
 %%%%%%%%%%%%%%%%%
 %     Part c    %
 %%%%%%%%%%%%%%%%%
-\problem{}{
+\newpage\problem{}{
     \begin{enumerate}[label=(\alph*)]
     \setcounter{enumi}{2}
     \item Now consider the case were $sA > (n+\delta)$. Again, plot $sf(k)/k$ and $n+\delta$ as a function of $k$. Discuss the dynamics of this economy starting from some initial capital stock $k_0$. Comment on the degree of unemployment of labor in the long run as well as the possible idleness of capital in the long run.
@@ -330,7 +363,7 @@ equals the time derivative of its log to show:
 %%%%%%%%%%%%%%%%%
 %     Part d    %
 %%%%%%%%%%%%%%%%%
-\problem{}{
+\newpage\problem{}{
     \begin{enumerate}[label=(\alph*)]
     \setcounter{enumi}{3}
     \item Is it possible for both capital and labor to be fully employed in a Harrod-Domar economy in the long run?
@@ -348,108 +381,6 @@ equals the time derivative of its log to show:
 
 
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                Problem 4                    %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
-\section*{Problem 4}
-\problem{Problem name}{
-    Problem description
-}
-
-\begin{align} 
-    \intertext{stuff}
-    y&=x
-\end{align}
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                Problem 5                    %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
-\section*{Problem 5}
-\problem{Problem name}{
-    Problem description
-}
-
-\begin{align} 
-    \intertext{stuff}
-    y&=x
-\end{align}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                Problem 6                    %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section*{Problem 6}
-\problem{Problem name}{
-    Problem description
-}
-
-\begin{align} 
-    \intertext{stuff}
-    y&=x
-\end{align}
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                Problem 7                    %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section*{Problem 7}
-\problem{Problem name}{
-    Problem description
-}
-
-\begin{align} 
-    \intertext{stuff}
-    y&=x
-\end{align}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                Problem 8                    %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section*{Problem 8}
-\problem{Problem name}{
-    Problem description
-}
-
-\begin{align} 
-    \intertext{stuff}
-    y&=x
-\end{align}
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                Problem 9                    %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section*{Problem 9}
-\problem{Problem name}{
-    Problem description
-}
-
-\begin{align} 
-    \intertext{stuff}
-    y&=x
-\end{align}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                Problem 10                   %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section*{Problem 10}
-\problem{Problem name}{
-    Problem description
-}
-
-\begin{align} 
-    \intertext{stuff}
-    y&=x
-\end{align}
 
 
 
