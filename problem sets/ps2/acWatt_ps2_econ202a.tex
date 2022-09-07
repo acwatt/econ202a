@@ -1,43 +1,6 @@
 \documentclass[12pt]{article}
-% \usepackage{{../preamble}}
-\usepackage{amsmath,amssymb,mathtools,amsthm}
-\usepackage{xfrac} % for sfrac
-\usepackage{graphicx}
+\usepackage{{../preamble}}
 \graphicspath{{pics}}
-\usepackage{fancyhdr}
-\usepackage{enumitem}
-\usepackage{placeins} % \FloatBarrier
-\usepackage[top=1in, left=1.5cm, right=1.5cm, bottom=2.0cm]{geometry}
-\setlength{\headheight}{15pt} %Make it at least 14.49998pt.
-%%%%%%%%%%%%%% HEADER / FOOTER %%%%%%%%%%%%%%
-% \setlength{\headheight}{8.2pt}    
-\pagestyle{fancy}
-\fancyhf{}
-\lhead{Econ 202A, Fall 2022}
-\rhead{Aaron C. Watt}
-\cfoot{\bfseries\thepage}
-% \lfoot{\copyright ACWatt 2020}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\usepackage{tcolorbox} % colored definition boxes
-
-%%%%% Section numbers and bookmark
-% can use \section{} and it will not have a 
-% number but will still add to bookmarks
-\makeatletter
-\renewcommand\@seccntformat[1]{}
-\makeatother
-
-
-\newcommand{\problem}[2]
-{
-    \begin{tcolorbox}[colback=gray!10!white,
-        colframe=gray!75!black,
-        title={#1}]
-        #2
-    \end{tcolorbox}
-}
 
 \begin{document}
 \chead{Problem Set 2}
@@ -74,10 +37,21 @@ there is a permanent fall in $g$.
     \end{enumerate} 
 }
 
-In the plot below, we can see that a decrease in $g$ 
+
 \includegraphics[width=0.5\textwidth]{1.a}
 
 
+In the plot above, we can see a decrease in $g$
+\begin{itemize}
+    \item[$\implies$] a decrease in the slope of $(n+g)k$
+    \item[$\implies$] increase in the $k$ where $f(k)-(n+g)k=0$
+    \item[$\implies$] increase in the $k$ where the $\kdot=0$ curve meets the $k$ axis
+\end{itemize}
+
+A decrease in the slope of $(n+g)k$ also implies that the distance between $(n+g)k$ and $f(k)$ will be larger $\forall k$ between 0 and where $f(k)-(n+g)k=0$.
+
+\noindent
+So, overall, a decrease in $g$ implies a vertical and horizontal stretch outward for the $\kdot = 0$ curve.
 
 
 %%%%%%%%%%%%%%%%%
