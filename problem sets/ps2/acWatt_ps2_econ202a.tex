@@ -66,8 +66,8 @@ So, overall, a decrease in $g$ implies a vertical and horizontal stretch outward
 
 \includegraphics[width=0.5\textwidth]{1.b}
 
-Because $f'>0$ and $f''<0$ by assumption, the plot of $f'$ is shaped as in the above plot. Then when $g$ has decreased from $g_1$ to $g_2$, the intersection with $f'$ occurs at a higher $k^*$. Since $\ccdot=0$ occurs when $f'=\rho+\theta g$ and $\rho, \theta$ are constants, then 
- 
+Because $f'>0$ and $f''<0$ by assumption, the plot of $f'$ is shaped as in the above plot. Then when $g$ has decreased from $g_1$ to $g_2$, the intersection with $f'$ occurs at a higher $k^*$. Since $\ccdot=0$ occurs when $f'=\rho+\theta g$ and $\rho, \theta$ are constants, then the $\ccdot=0$ curve shifts to the right to a higher $k^*$.
+  
 
 %%%%%%%%%%%%%%%%%
 %     Part c    %
@@ -78,6 +78,14 @@ Because $f'>0$ and $f''<0$ by assumption, the plot of $f'$ is shaped as in the a
     \item At the time of the change, does $c$ rise, fall, or stay the same, or is it not possible to tell?
     \end{enumerate} 
 }
+
+Since $k_1^* < k_2^*$ from the plot in part (b)
+\begin{itemize}
+    \item[$\implies$] immediately after the decrease from $g_1$ to $g_2$, $f'(k_1^*)>\rho+\theta g_2$.
+    \item[$\implies$] $\dfrac{\ccdot}{c}\bigg|_{k=k_1^*,g=g_2} = \dfrac{f'(k_1^*) - \rho - \theta g_2}{\theta} > 0$
+    \item[$\implies$] $\ccdot|_{k=k_1^*,g=g_2} > 0$
+    \item[$\implies$] $c$ rises immediately after the decrease in $g$
+\end{itemize}
 
 
 %%%%%%%%%%%%%%%%%
@@ -90,6 +98,22 @@ Because $f'>0$ and $f''<0$ by assumption, the plot of $f'$ is shaped as in the a
     \end{enumerate} 
 }
 
+Since there is no depreciation, the real interest rate $r$ is equal to the marginal product of capital $f'(k)$ (since the price of output is assumed to be 1).
+
+\begin{align*}
+    \intertext{So}
+    r-g &= f'(k) - g
+    \intertext{And immediately after the change in g,}
+    f'(k_1^*) - g_1
+    \intertext{changes to}
+    f'(k_1^*) - g_2
+    \intertext{Since $f'(k)$ remains unchanged at the time of the change but $g$ decreases from $g_1$ to $g_2$,}
+    f'(k_1^*) - g_2 &>  f'(k_1^*) - g_1\\
+    r|_{g_1}-g_2 &> r|_{g_1}-g_1
+    \intertext{So, at the time of the change, $r-g$ increases.}
+\end{align*}
+
+
 
 %%%%%%%%%%%%%%%%%
 %     Part e    %
@@ -100,6 +124,22 @@ Because $f'>0$ and $f''<0$ by assumption, the plot of $f'$ is shaped as in the a
     \item In the long run, does $r-g$ rise, fall, or stay the same, or is it not possible to tell?
     \end{enumerate} 
 }
+
+\begin{align*}
+    \intertext{Continuing my notation from parts (b)-(d), in the long run,}
+    \lim_{t\to\infty}f'(k) &= f'(k_2^*)
+    \intertext{So the change in $r-g$ in the long run will be}
+    (r|_{g_2}-g_2) - (r|_{g_1}-g_1) &= (f'(k_2^*)-g_2) - (f'(k_1^*)-g_1) \\
+        &= (\rho +\theta g_2 -g_2) - (\rho +\theta g_1-g_1) \\
+        &= (\rho +(\theta-1) g_2) - (\rho +(\theta-1)g_1) \\
+        &= (\theta-1) (g_2-g_1) \\
+        &\begin{cases}
+            >0 &\text{ if } \theta\in (0,1) \\
+            <0 &\text{ if } \theta > 1
+        \end{cases}
+\end{align*}
+
+Since there is no upper constraint on $\theta$ from the utility function ($\theta\in (0,1)$ and $\theta > 1$ both produce an upward sloping, convex function), then there is no way to tell, in general, if $r-g$ rises or falls without an estimate of $\theta$.
 
 
 %%%%%%%%%%%%%%%%%
@@ -142,8 +182,29 @@ that this change in tax policy is unanticipated.
     \item How, if at all, does the tax affect the $\ccdot = 0$ locus? The $\kdot = 0$ locus?
     \end{enumerate} 
 }
+\def\kone{k^*_1} \def\ktwo{k^*_2}
+\begin{align*}
+    \intertext{To examine the effects on the $\ccdot=0$ locus, we set $\ccdot=0$ in the consumption Euler equation. This give}
+    r(t) &= \rho + \theta g
+    \intertext{Before the policy is introduced, we know $f'(k)=r(t)$ because firms are operating under a CRS production function in a competitive market. So let $\kone$ denote $k$ when $\ccdot=0$ before the tax is introduced, thus}
+    f'(\kone) &= \rho + \theta g
+    \intertext{After the tax is introduced, $r(t)=(1-\tau) f'(k(t))$, so let $\ktwo$ denote $k$ when $\ccdot=0$ after the tax is introduced, satisfying}
+    (1-\tau)f'(\ktwo) &= \rho + \theta g\\[1em]
+    f'(\ktwo) &= \frac{\rho + \theta g}{1-\tau}
+    \intertext{Since $\tau\in(0,1)$, then $(1-\tau)^{-1}\in(1,\infty)$,so }
+    \frac{\rho + \theta g}{1-\tau} &> \rho + \theta g \\[1em]
+    f'(\ktwo) &> f'(\kone)
+    \intertext{Because $f'>0$ and $f''<0$, this implies}
+    \ktwo &< \kone
+    \intertext{So, the $\ccdot=0$ locus is shifting left from a vertical line (in $k-c$ space) at $\kone$ to a vertical line at $\ktwo$.}
+\end{align*} 
 
-
+\newpage
+\begin{align*}
+    \intertext{To examine the effects on the $\kdot=0$ locus, we set $\kdot=0$ in the intensive form of the equation of motion for capital. This gives}
+    c &= f(k) - (n+g)k
+    \intertext{This equation is not related to $r(t)$ and does no change the $\kdot=0$ path through $k-c$ space. The new tax only changes how households trade off consumption for saving and where the $\ccdot=0$ locus intersects the $\kdot=0$ path.}
+\end{align*} 
 
 %%%%%%%%%%%%%%%%%
 %     Part b    %
@@ -154,7 +215,7 @@ that this change in tax policy is unanticipated.
     \item How does the economy respond to the adoption of the tax at time 0? What are the dynamics after time 0?
     \end{enumerate} 
 }
-
+$\kdot$
 
 %%%%%%%%%%%%%%%%%
 %     Part c    %
@@ -204,6 +265,7 @@ that this change in tax policy is unanticipated.
     \end{enumerate} 
 }
 
+\includegraphics[width=0.8\textwidth]{2.b}
 
 %%%%%%%%%%%%%%%%%
 %     Part f    %
