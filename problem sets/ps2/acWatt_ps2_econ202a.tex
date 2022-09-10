@@ -215,7 +215,22 @@ that this change in tax policy is unanticipated.
     \item How does the economy respond to the adoption of the tax at time 0? What are the dynamics after time 0?
     \end{enumerate} 
 }
-$\kdot$
+{
+\begin{wrapfigure}{l}{0.5\textwidth}
+  \begin{center}
+    \includegraphics[width=0.48\textwidth]{2.b}
+  \end{center}
+  \caption{Dynamics of implementing an investment tax.}
+\end{wrapfigure}
+
+
+\vspace{3em}
+
+We can see in the top panel to the left that the level of capital $k^*$ that satisfies the consumption Euler equation decreases from $\kone$ to $\ktwo$ when the new tax is introduced. This implies the change in the steady state level of consumption ($c$ where $\ccdot=0$) as we see in the middle panel. Before the tax is introduced, we assume that the economy was at point A in the bottom panel. Immediately after the unanticipated tax is introduced, the amount of capital has not had time to change, so it is still at $\kone$. The new steady state point with the tax is point C, where the new $\ccdot=0$ locus intersects the $\kdot=0$ locus. But in order to be on the saddle path to their new steady state C, consumers must increase their consumption from point A up to point B immediately after the tax is introduced (an instantaneous jump in this model).
+
+Thus, consumers first jump to point B, then follow their saddle path to point C in order to follow their Euler equation. Where the concavity of the saddle path is determined by the utility parameter $\theta$.
+
+}
 
 %%%%%%%%%%%%%%%%%
 %     Part c    %
@@ -227,6 +242,12 @@ $\kdot$
     \end{enumerate} 
 }
 
+\begin{itemize}
+    \item $k$ at the time of the change remains $\kone$, where it was on the old balanced growth path.
+    \item $k$ after the change decreases monotonically to $\ktwo$, which is lower than on the old balanced growth path.
+    \item $c$ at the time of the change jumps up discontinuously from the old balanced-growth-path value to the new saddle path (higher than where it was on the old balanced growth path).
+    \item $c$ after the change decreases monotonically to the new balanced growth path, and it will end at the new balanced growth path, which could be above or below the consumption on the old balanced growth path depending on the parameters and shape of $f(k)$.
+\end{itemize}
 
 %%%%%%%%%%%%%%%%%
 %     Part d    %
@@ -241,7 +262,43 @@ $\kdot$
     \end{enumerate}
     \end{enumerate} 
 }
-
+\def\c{c^*} \def\y{y^*} \def\k{k^*} \def\s{s^*} \def\f{f(\k)} \renewcommand{\t}{\tau}
+\begin{align*}
+    \intertext{Denote optimal savings rate as $s^* = (y^* - c^*)/y^*$. First we can use the $\kdot=0$ condition of the balanced growth path, which implies:}
+    \c &= \y - (n+g)\k
+    \intertext{Then the savings rate on the balanced growth path is}
+    \s &= \frac{\y-\c}{\y} \\[1em]
+        &= \frac{(n+g)\k}{\y} \\[1em]
+        &= \frac{(n+g)\k}{\f}
+    \intertext{Differentiating with respect to the tax rate, we have}
+    \frac{d\s}{d\t} 
+        &= (n+g)\l[\frac{1}{\f}\frac{d\k}{d\t} - \frac{\k}{\f^2}\frac{df(\k)}{d\t} \r] \\[1em]
+        &= (n+g)\l[\frac{1}{\f}\frac{d\k}{d\t} - \frac{\k}{\f^2}f'(\k)\frac{d\k}{d\t} \r] \\[1em]
+        &= \frac{n+g}{\f^2}\l[\f - \k f'(\k)\r]\frac{d\k}{d\t} \\[1em]
+    \intertext{Since $\dfrac{n+g}{\f^2}>0$, we just need to determine the sign of the last two terms. Starting with the term in the brackets: from our assumptions about the production function, we can determine that}
+    f'>0, f''<0 &\implies f(k) > k f'(k) \\
+        &\implies f(k) - k f'(k) > 0 \quad \forall k>0
+    \intertext{We can think about this graphically: since the slope of $f$ is positive and always decreasing, the tangent to $f$ at any point is going to intersect the vertical axis above the origin (i.e., $>0$). $f(k) - k f'(k)$ is precisely the height above the origin where this tangent intersects the vertical axis.}
+    \intertext{For the last term, we can use the $\ccdot=0$ condition to find the balanced-growth-path level of capital and differentiate. The $\ccdot=0$ condition implies}
+    f'(\k) &= \frac{\rho + \theta g}{1-\t} \\[1em]
+    \implies \k &= f'{}^{-1}\l( \frac{\rho + \theta g}{1-\t}\r) \\[1em]
+    \implies \frac{d\k}{d\t} &= \frac{d}{d\t} f'{}^{-1}\l( \frac{\rho + \theta g}{1-\t}\r) \\[1em]
+        &= f'{}^{-1}{}'\l( \frac{\rho + \theta g}{1-\t}\r)
+            \frac{\rho + \theta g}{(1-\t)^2} \\[1em]
+    \intertext{where $'$ indicates the derivative of the univariate function and $f'{}^{-1}{}'\equiv (f'(\cdot)^{-1})'$.}
+    \intertext{By assumption, $f'>0, f''<0$, and}
+    f'>0, f''<0 &\implies f'{}^{-1}>0, f'{}^{-1}{}' <0
+    \intertext{We can again think about this graphically. $f'>0$ so it is in the first quadrant. $f''<0$ so it is decreasing in $k$. Taking the inverse of a function in the first quadrant is the same as reflecting it across the 45$^\deg$ line, so a positive, decreasing function will have an inverse that is also positive and decreasing. Meaning, $f'{}^{-1}>0, f'{}^{-1}{}' <0$. This implies}
+    \frac{d\k}{d\t} &= f'{}^{-1}{}'\l( \frac{\rho + \theta g}{1-\t}\r)
+            \frac{\rho + \theta g}{(1-\t)^2} \\[1em]
+            &<0
+    \intertext{Which means that}
+    \frac{d\s}{d\t} &= \underbrace{ \frac{n+g}{\f^2} }_{>0}
+            \underbrace{ \l[\f - \k f'(\k)\r] }_{>0}
+            \underbrace{ \frac{d\k}{d\t} }_{<0} \\[1em]
+        &<0
+    \intertext{So the endogenous savings rate on the balanced growth path decrease as the investment income tax increases.}
+\end{align*}
 
 
 %%%%%%%%%%%%
@@ -253,7 +310,8 @@ $\kdot$
     \end{enumerate} 
 }
 
-
+The $\ccdot=0$ condition implies that $r(t) = \rho + \theta g$, hence the steady-state real interest rate is constant \textit{and independent of the tax rate} $\t$ (Barro et al. 1995). Since all countries share the fundamental parameters $\rho, \theta$, and $g$, the steady-state real interest rate is the same for all countries. Because the real interest is the same, there is no incentive for low-$\tau$, high-$k^*$ countries to invest in low-$k^*$ (low savings) countries. This is a result of the simplicity of the model and Barro goes on to discuss how including capital frictions play a role in predicting the rates of convergence of poor and rich countries -- namely that including those frictions only changes the speed of convergence a small amount.
+ 
 
 %%%%%%%%%%%%%%%%%
 %     Part e    %
@@ -265,7 +323,17 @@ $\kdot$
     \end{enumerate} 
 }
 
-\includegraphics[width=0.8\textwidth]{2.b}
+In all cases, subsidizing investment will move the $\ccdot=0$ curve to a higher $k^*$. This is because $(1-\t)>1$ and $\dfrac{\rho+\theta g}{1-\t}<\rho+\theta g$, therefore the $\dfrac{\rho+\theta g}{1-\t}$ will intersect $f'(k)$ at a higher $k$ (and this intersection is the solution to the $\ccdot=0$ condition). But whether this higher $k^*$ induces higher welfare depends on where our starting balanced growth path $k-c$ point is (where $\ccdot=0$ and $\kdot=0$). 
+
+\begin{itemize}
+    \item If the shift to a higher $k^*$ along the $\kdot=0$ curve results in a higher $c^*$, then steady-state consumption has increased and welfare has improved.
+    \item If the shift to a higher $k^*$ along the $\kdot=0$ curve results in a lower $c^*$, then steady-state consumption has decreased and welfare has decreased.
+\end{itemize}
+
+If we are not already at the golden rule level of capital, then there exists some tax or subsidy that would induce a welfare increase and shift to the golden rule level of captial.
+
+
+
 
 %%%%%%%%%%%%%%%%%
 %     Part f    %
@@ -276,6 +344,10 @@ $\kdot$
     \item How, if at all, do the answers to parts (a) and (b) change if the government does not rebate the revenue from the tax but instead uses it to make government purchases?
     \end{enumerate} 
 }
+
+The government spending does not change the $\ccdot$ equation from parts (a) and (b), thus the $k^*$ remains the same. However, the new $\kdot=0$ equation becomes $c=f(k)-(n+g)k-G$, where $G$ is the government spending of the tax revenue. This just means that the $\kdot=0$ curve is translated downward by $G$ units of consumption. The economy jumps to the new balanced growth path at the same $k^*$ and lower $c^*$. 
+
+From the figure in part (b), the point C in the bottom panel would simply be shifted downward. So depending on how large $G$ is (or $\t$), point B would either be below or above point A. So if $G$ was large enough, point B could be below point A, and consumption might jump down instead of up in order to get on the new saddle path to the balanced growth path (the new point C).
 
 
 
