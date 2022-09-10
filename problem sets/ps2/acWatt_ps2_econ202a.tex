@@ -151,7 +151,42 @@ Since there is no upper constraint on $\theta$ from the utility function ($\thet
     \item Find an expression for the impact of a marginal change in $g$ on the fraction of output that is saved on the balanced growth path. Can one tell whether this expression is positive or negative?
     \end{enumerate} 
 }
+\def\c{c^*} \def\y{y^*} \def\k{k^*} \def\s{s^*} \def\f{f(\k)} \renewcommand{\t}{\tau}
+\begin{align*}
+    \intertext{Denote optimal savings rate as $s^* = (y^* - c^*)/y^*$. First we can use the $\kdot=0$ condition of the balanced growth path, which implies:}
+    \c &= \y - (n+g)\k
+    \intertext{Then the savings rate on the balanced growth path is}
+    \s &= \frac{\y-\c}{\y} \\[1em]
+        &= \frac{(n+g)\k}{\y} \\[1em]
+        &= \frac{(n+g)\k}{\f}
+    \intertext{Differentiating with respect to $g$, we have}
+    \frac{d\s}{dg}
+        &= \frac{\k}{\f} + (n+g)\l[\frac{1}{\f}\frac{d\k}{dg} - \frac{\k}{\f^2}\frac{df(\k)}{dg} \r] \\[1em]
+        &= \frac{\k}{\f} + (n+g)\l[\frac{1}{\f}\frac{d\k}{dg} - \frac{\k}{\f^2}f'(\k)\frac{d\k}{dg} \r] \\[1em]
+        &= \frac{\k}{\f} + \frac{n+g}{\f^2}\l[\f - \k f'(\k)\r]\frac{d\k}{dg} \\[1em]
+    \intertext{Since $\dfrac{n+g}{\f^2}>0$, we just need to determine the sign of the term in square brackets and $\dfrac{d\k}{dg}$. Starting with the term in the brackets: from our assumptions about the production function, we can determine that}
+    f'>0, f''<0 &\implies f(k) > k f'(k) \\
+        &\implies f(k) - k f'(k) > 0 \quad \forall k>0
+    \intertext{We can think about this graphically: since the slope of $f$ is positive and always decreasing, the tangent to $f$ at any point is going to intersect the vertical axis above the origin (i.e., $>0$). $f(k) - k f'(k)$ is precisely the height above the origin where this tangent intersects the vertical axis. The figure below demonstrates this for a particular point $k$, but it holds generally anywhere in the domain of $f$.}
+\end{align*}
 
+\includegraphics[width=0.5\textwidth]{1.f}
+
+\begin{align*}
+    \intertext{For the last term, we can totally differentiate the $\ccdot=0$ condition:}
+    f'(\k) &= \rho + \theta g\\[0.5em]
+    \implies  d[f'(\k)] &= d[\rho + \theta g]\\[0.5em]
+    f''(\k) d\k &= \theta dg\\[0.5em]
+    \frac{d\k}{dg} &= \frac{\theta}{f''(\k)} <0 \\[1em]
+    \intertext{Since $f''<0$ by assumption.}
+    \intertext{Which means that}
+    \frac{d\s}{d\t} &=\underbrace{\frac{\k}{\f}}_{>0} + 
+    \underbrace{ \frac{n+g}{\f^2} }_{>0}
+            \underbrace{ \l[\f - \k f'(\k)\r] }_{>0}
+            \underbrace{ \frac{d\k}{d\t} }_{<0} \\[1em]
+        &<0
+    \intertext{So the endogenous savings rate on the balanced growth path decrease as the investment income tax increases.}
+\end{align*}
 
 %%%%%%%%%%%%%%%%%
 %     Part g    %
@@ -262,7 +297,7 @@ Thus, consumers first jump to point B, then follow their saddle path to point C 
     \end{enumerate}
     \end{enumerate} 
 }
-\def\c{c^*} \def\y{y^*} \def\k{k^*} \def\s{s^*} \def\f{f(\k)} \renewcommand{\t}{\tau}
+
 \begin{align*}
     \intertext{Denote optimal savings rate as $s^* = (y^* - c^*)/y^*$. First we can use the $\kdot=0$ condition of the balanced growth path, which implies:}
     \c &= \y - (n+g)\k
@@ -278,7 +313,10 @@ Thus, consumers first jump to point B, then follow their saddle path to point C 
     \intertext{Since $\dfrac{n+g}{\f^2}>0$, we just need to determine the sign of the last two terms. Starting with the term in the brackets: from our assumptions about the production function, we can determine that}
     f'>0, f''<0 &\implies f(k) > k f'(k) \\
         &\implies f(k) - k f'(k) > 0 \quad \forall k>0
-    \intertext{We can think about this graphically: since the slope of $f$ is positive and always decreasing, the tangent to $f$ at any point is going to intersect the vertical axis above the origin (i.e., $>0$). $f(k) - k f'(k)$ is precisely the height above the origin where this tangent intersects the vertical axis.}
+    \intertext{We can think about this graphically: since the slope of $f$ is positive and always decreasing, the tangent to $f$ at any point is going to intersect the vertical axis above the origin (i.e., $>0$). $f(k) - k f'(k)$ is precisely the height above the origin where this tangent intersects the vertical axis. The figure below demonstrates this for a particular point $k$, but it holds generally anywhere in the domain of $f$.}
+\end{align*}
+\includegraphics[width=0.5\textwidth]{1.f}
+\begin{align*}
     \intertext{For the last term, we can use the $\ccdot=0$ condition to find the balanced-growth-path level of capital and differentiate. The $\ccdot=0$ condition implies}
     f'(\k) &= \frac{\rho + \theta g}{1-\t} \\[1em]
     \implies \k &= f'{}^{-1}\l( \frac{\rho + \theta g}{1-\t}\r) \\[1em]
