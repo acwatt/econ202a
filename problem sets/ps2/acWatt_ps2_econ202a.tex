@@ -16,6 +16,7 @@
 \def\ddp{\dfrac{\partial}{\partial \phi}}
 \def\dgdp{\dfrac{\partial\gamma}{\partial \phi}}
 \def\invphi{\sfrac{1}{\phi}}
+\def\kone{k^*_1} \def\ktwo{k^*_2}
 
 
 
@@ -178,14 +179,18 @@ Since there is no upper constraint on $\theta$ from the utility function ($\thet
     \implies  d[f'(\k)] &= d[\rho + \theta g]\\[0.5em]
     f''(\k) d\k &= \theta dg\\[0.5em]
     \frac{d\k}{dg} &= \frac{\theta}{f''(\k)} <0 \\[1em]
-    \intertext{Since $f''<0$ by assumption.}
+    \intertext{Since $f''<0$ by assumption. This agrees with the graphical analysis in part (b) (a decrease in $g$ increased $\k$).}
     \intertext{Which means that}
-    \frac{d\s}{d\t} &=\underbrace{\frac{\k}{\f}}_{>0} + 
+    \frac{d\s}{dg} &=\underbrace{\frac{\k}{\f}}_{>0} + 
     \underbrace{ \frac{n+g}{\f^2} }_{>0}
             \underbrace{ \l[\f - \k f'(\k)\r] }_{>0}
-            \underbrace{ \frac{d\k}{d\t} }_{<0} \\[1em]
-        &<0
-    \intertext{So the endogenous savings rate on the balanced growth path decrease as the investment income tax increases.}
+            \underbrace{ \frac{d\k}{dg} }_{<0} \\[1em]
+        &\lesseqgtr 0
+    \intertext{So the endogenous savings rate on the balanced growth path may increase, decrease, or remain unchanged when the growth rate changes.}
+    \intertext{We can think of this change as decomposed into the direct effect (the first term) and the indirect effect (the right term).}
+    \intertext{The direct effect is how much the savings rate increases with a marginal increase in the technological growth rate, given capital and output stay constant. If we look at the first plot in part (a), we see that a change in the growth rate changes the size of the $\kdot=0$ curve, where an increase in $g$ $\to$ a shrinkage of the $\kdot=0$ curve, which would decrease consumption if $k^*$ remains constant, increasing the savings rate.}
+    \intertext{The indirect effect is how much the savings rate decreases from the decrease in capital. From the plot in part (b), we can see that an increase in $g$ leads to a decrease in $k^*$ ($g_2\to g_1 \implies \ktwo\to\kone$). This decrease in $k^*$ and shifting left of the $\ccdot=0$ curve has an  }
+    \intertext{So the sign of the change in the savings rate depends on the relative size of the direct and indirect effects. }
 \end{align*}
 
 %%%%%%%%%%%%%%%%%
@@ -217,7 +222,7 @@ that this change in tax policy is unanticipated.
     \item How, if at all, does the tax affect the $\ccdot = 0$ locus? The $\kdot = 0$ locus?
     \end{enumerate} 
 }
-\def\kone{k^*_1} \def\ktwo{k^*_2}
+
 \begin{align*}
     \intertext{To examine the effects on the $\ccdot=0$ locus, we set $\ccdot=0$ in the consumption Euler equation. This give}
     r(t) &= \rho + \theta g
