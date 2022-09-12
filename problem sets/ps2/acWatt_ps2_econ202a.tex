@@ -80,13 +80,7 @@ Because $f'>0$ and $f''<0$ by assumption, the plot of $f'$ is shaped as in the a
     \end{enumerate} 
 }
 
-Since $k_1^* < k_2^*$ from the plot in part (b)
-\begin{itemize}
-    \item[$\implies$] immediately after the decrease from $g_1$ to $g_2$, $f'(k_1^*)>\rho+\theta g_2$.
-    \item[$\implies$] $\dfrac{\ccdot}{c}\bigg|_{k=k_1^*,g=g_2} = \dfrac{f'(k_1^*) - \rho - \theta g_2}{\theta} > 0$
-    \item[$\implies$] $\ccdot|_{k=k_1^*,g=g_2} > 0$
-    \item[$\implies$] $c$ rises immediately after the decrease in $g$
-\end{itemize}
+Since $k_1^* < k_2^*$ from the plot in part (b), we know that the saddle path to new balanced growth path equilibrium point will be to
 
 
 %%%%%%%%%%%%%%%%%
@@ -193,6 +187,13 @@ Since there is no upper constraint on $\theta$ from the utility function ($\thet
     \intertext{So the sign of the change in the savings rate depends on the relative size of the direct and indirect effects. }
 \end{align*}
 
+
+\includegraphics[width=0.5\textwidth]{1.g}
+
+From our graphical example in parts (a) and (b), we can see that the balanced growth path moves from point D to F when the growth rate decreases. We can think of this as shifts down the old $\ccdot=0$ curve from point D to point E, then a shift along the new $\kdot=0$ curve to the new $\ccdot=0$ curve from point E to point F. From the picture, we can see that there's an unambiguous decrease in $c$ from point D to point E, but the total effect going from point D to F depends on where we started on the $\kdot=0$ curve and the relative size of the changes in the $\ccdot=0$ and $\kdot=0$ curves.
+
+In the picture above, we see a decrease in steady-state $c$ (increase in the savings rate. But we could also imagine starting further to the right on the first $\kdot=0$ curve and ending at a point F that is higher than point D.
+
 %%%%%%%%%%%%%%%%%
 %     Part g    %
 %%%%%%%%%%%%%%%%%
@@ -203,6 +204,35 @@ Since there is no upper constraint on $\theta$ from the utility function ($\thet
     \end{enumerate} 
 }
 
+\begin{align*}
+\intertext{For our Cobb-Douglas production function, we have}
+    f(k) &= k^\alpha \\
+    f'(k) &= \alpha k^{\alpha-1}
+\intertext{Noting that}
+    \k^{1-\alpha} &= \frac{1}{\k^\alpha-1}\\[1em]
+        &= \frac{\alpha}{\alpha \k^\alpha-1} \\[1em]
+        &= \frac{\alpha}{f'(\k)} \\[1em]
+        &= \frac{\alpha}{\rho + \theta g}
+\intertext{We know from the previous section that }
+    \s &= \frac{(n+g)\k}{\f} \\[1em]
+        &= \frac{(n+g)\k}{\k^\alpha} \\[1em]
+        &= (n+g)\k^{1-\alpha}\\[1em]
+        &= \frac{(n+g)\alpha}{\rho + \theta g}
+        \quad\text{from the step above}
+\intertext{We can differentiate to get}
+    \frac{d\s}{dg}
+        &= \frac{\alpha}{\rho + \theta g} 
+            - \frac{(n+g)\alpha\theta}{(\rho + \theta g)^2} \\[1em]
+        &= \frac{\alpha}{\rho + \theta g} 
+        \l[ 1 - \frac{(n+g)\theta}{\rho + \theta g} \r] \\
+\intertext{By the transversality condition, $\rho-n > (1-\theta)g$ to ensure a well-defined solution to the welfare maximization problem. Thus, $\dfrac{n+g}{\rho + \theta g}<1$ and}
+    \frac{d\s}{dg}
+        &= \frac{\alpha}{\rho + \theta g} 
+        \l[ 1 - \frac{(n+g)}{\rho + \theta g}\theta \r] \\[1em]
+        &> \frac{\alpha}{\rho + \theta g} 
+        \l[ 1 - \theta \r]
+\end{align*}
+So we can see that the sign of $\dfrac{d\s}{dg}$ depends on the size of $\theta$: if $\theta<1$, then $\dfrac{d\s}{dg}>0$, but if $\theta>1$, the sign of $\dfrac{d\s}{dg}$ is indeterminate.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -243,7 +273,7 @@ that this change in tax policy is unanticipated.
 \begin{align*}
     \intertext{To examine the effects on the $\kdot=0$ locus, we set $\kdot=0$ in the intensive form of the equation of motion for capital. This gives}
     c &= f(k) - (n+g)k
-    \intertext{This equation is not related to $r(t)$ and does no change the $\kdot=0$ path through $k-c$ space. The new tax only changes how households trade off consumption for saving and where the $\ccdot=0$ locus intersects the $\kdot=0$ path.}
+    \intertext{This equation is not related to $r(t)$ and does not change the $\kdot=0$ path through $k-c$ space. The new tax only changes how households trade off consumption for saving and where the $\ccdot=0$ locus intersects the $\kdot=0$ path.}
 \end{align*} 
 
 %%%%%%%%%%%%%%%%%
@@ -323,24 +353,18 @@ Thus, consumers first jump to point B, then follow their saddle path to point C 
 \includegraphics[width=0.5\textwidth]{1.f}
 \begin{align*}
     \intertext{For the last term, we can use the $\ccdot=0$ condition to find the balanced-growth-path level of capital and differentiate. The $\ccdot=0$ condition implies}
-    f'(\k) &= \frac{\rho + \theta g}{1-\t} \\[1em]
-    \implies \k &= f'{}^{-1}\l( \frac{\rho + \theta g}{1-\t}\r) \\[1em]
-    \implies \frac{d\k}{d\t} &= \frac{d}{d\t} f'{}^{-1}\l( \frac{\rho + \theta g}{1-\t}\r) \\[1em]
-        &= f'{}^{-1}{}'\l( \frac{\rho + \theta g}{1-\t}\r)
-            \frac{\rho + \theta g}{(1-\t)^2} \\[1em]
-    \intertext{where $'$ indicates the derivative of the univariate function and $f'{}^{-1}{}'\equiv (f'(\cdot)^{-1})'$.}
-    \intertext{By assumption, $f'>0, f''<0$, and}
-    f'>0, f''<0 &\implies f'{}^{-1}>0, f'{}^{-1}{}' <0
-    \intertext{We can again think about this graphically. $f'>0$ so it is in the first quadrant. $f''<0$ so it is decreasing in $k$. Taking the inverse of a function in the first quadrant is the same as reflecting it across the 45$^\deg$ line, so a positive, decreasing function will have an inverse that is also positive and decreasing. Meaning, $f'{}^{-1}>0, f'{}^{-1}{}' <0$. This implies}
-    \frac{d\k}{d\t} &= f'{}^{-1}{}'\l( \frac{\rho + \theta g}{1-\t}\r)
-            \frac{\rho + \theta g}{(1-\t)^2} \\[1em]
-            &<0
+    (1-\t)f'(\k) &= \rho + \theta g
+\intertext{Which we can totally differentiate to get}
+    d[(1-\t)f'(\k)] &= d[\rho + \theta g]\\
+    -f'(\k)d\t + (1-\t)f''(\k)d\k &= 0 \\[1em]
+    \frac{d\k}{d\t} &= \frac{f'(\k)}{(1-\t)f''(\k)} \\[1em]
+        &<0
     \intertext{Which means that}
     \frac{d\s}{d\t} &= \underbrace{ \frac{n+g}{\f^2} }_{>0}
             \underbrace{ \l[\f - \k f'(\k)\r] }_{>0}
             \underbrace{ \frac{d\k}{d\t} }_{<0} \\[1em]
         &<0
-    \intertext{So the endogenous savings rate on the balanced growth path decrease as the investment income tax increases.}
+    \intertext{So the endogenous savings rate on the balanced growth path decreases as the investment-income tax increases.}
 \end{align*}
 
 
