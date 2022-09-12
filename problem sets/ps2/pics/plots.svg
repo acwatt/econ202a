@@ -4510,7 +4510,9 @@
        d="m 255.56312,326.37292 c -9.26089,2.80633 -17.67995,12.01909 -23.76033,22.77669 -4.44571,7.52613 -10.00918,9.30901 -24.13437,16.97965"
        id="path9966"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccc" />
+       sodipodi:nodetypes="ccc"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
     <text
        transform="matrix(-0.84525781,0.53435872,0.53435872,0.84525781,0,0)"
        inkscape:export-ydpi="200"
@@ -4803,7 +4805,9 @@
        inkscape:connector-curvature="0"
        id="path11530"
        d="m 344.32225,331.26771 c -10.08513,2.53158 -12.52057,7.1243 -18.60095,17.8819 -4.44571,7.52613 -7.76022,20.15693 -21.88541,27.82757"
-       style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+       style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200" />
     <text
        id="text11534"
        y="451.48975"
