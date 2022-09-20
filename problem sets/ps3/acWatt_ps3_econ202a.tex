@@ -34,6 +34,30 @@
 }
 
 
+\def\cone{\frac{C_{1t}^{1-\theta}}{1-\theta}}
+\def\ctwo{\frac{1}{1+\rho}\frac{C_{2(t+1)}^{1-\theta}}{1-\theta}}
+\begin{align*}
+\intertext{The Lagrangian for this problem is}
+\L &= U(t) + \lambda (W - P_1C_1 - P_2C_2) \\[1em]
+    &= \cone + \ctwo + \lambda (W - P_1C_1 - P_2C_2) \\[1em]
+\intertext{Supressing the $t$ subscript, we the FOCs are}
+\part{\L}{C_1} &= 0 \implies \frac{1}{\lambda} = P_1 C_1^\theta \\[1em]
+\part{\L}{C_2} &= 0 \implies \frac{1}{\lambda} = P_2 C_2^\theta (1+\rho) \\[1em]
+\intertext{So}
+P_1 C_1^\theta &= P_2 C_2^\theta (1+\rho) \\[1em]
+C_1 &= C_2\l[\frac{P_2}{P_1}(1+\rho)\r]^{1/\theta}
+\intertext{Plugging this into the budget constraint...}
+W &= P_1C_1 + P_2C_2 \\[1em]
+    &= P_1C_2\l[\frac{P_2}{P_1}(1+\rho)\r]^{1/\theta} + P_2C_2 \\[1em]
+    &= P_2C_2\l\{\l[\l(\frac{P_1}{P_2}\r)^{\theta-1}(1+\rho)\r]^{1/\theta} + 1\r\} \\[1em]
+\intertext{So the optimal period 2 consumption is}
+C_2^* &= \frac{W}{ P_2\l\{\l[\l(\frac{P_1}{P_2}\r)^{\theta-1}(1+\rho)\r]^{1/\theta} + 1\r\}}
+\intertext{And the optimal period 1 consumption is}
+C_1^* &= C_2^*\l[\frac{P_2}{P_1}(1+\rho)\r]^{1/\theta} \\[1em]
+    &= \frac{W\l[\frac{P_2}{P_1}(1+\rho)\r]^{1/\theta}}{ P_2\l\{\l[\l(\frac{P_1}{P_2}\r)^{\theta-1}(1+\rho)\r]^{1/\theta} + 1\r\}}
+\intertext{Which probably simplifies...}
+\end{align*}
+
 
 
 %%%%%%%%%%%%%%%%%
@@ -50,6 +74,16 @@ $C_2$ is $1/\theta$.
 }
 
 
+\begin{align*}
+\intertext{Since we know that}
+\frac{C_1^*}{C_2^*} &= \l[\frac{P_2}{P_1}(1+\rho)\r]^{1/\theta}
+\intertext{Then}
+\ln\frac{C_1^*}{C_2^*} &= \frac{1}{\theta}\ln\l[\frac{P_2}{P_1}(1+\rho)\r] \\[1em]
+    &=\frac{1}{\theta}\l[\ln(1+\rho) - \ln\frac{P_1}{P_2} \r]
+\intertext{So}
+\part{\ln\dfrac{C_1^*}{C_2^*}}{\ln\dfrac{P_1}{P_2}}
+    &= -\frac{1}{\theta}
+\end{align*}
 
 
 
@@ -66,7 +100,40 @@ rate is constant, and let $W$ denote the household’s initial wealth plus the p
 value of its lifetime labor income (the right-hand side of [2.7]). Find the utility-maximizing path of $C$, given $r$, $W$, and the parameters of the utility function.
 }
 
-
+\def\ut{\frac{C(t)^{1-\theta}}{1-\theta}}
+\def\lh{\frac{L(t)}{H}}
+\def\lt{\lambda(t)}
+\def\ldot{\dot\lambda}
+\begin{align*}
+\intertext{First note that since $r(t)=r$ is a constant, }
+R(t) &= \int_0^tr(s)dt = \int_0^trdt = rt
+\intertext{so the path of consumption satisfies}
+\argmax_{C(t)} & \int_0^\infty e^{-\rho t}\ut\lh dt
+\intertext{subject to the conditions}
+    & \int_0^\infty e^{-rt}C(t)\lh dt \leq W\\[1em]
+    & \kdot = f(k) - C - (n+g)k \\[1em]
+    & f'(k) = r(t) = r
+\intertext{So the Hamiltonian for this problem is}
+H &= e^{-\rho t}\ut\lh + \lt
+    \l[f(k(t)) - C(t) - (n+g)k(t)\r]
+\intertext{And the first FONC is}
+H_C = 0 &\implies \lt = e^{-\rho t}C(t)^{-\theta}\lh
+\intertext{taking logs and then the time derivative gives}
+    &\implies \ln\lt = -\rho t -\theta\ln C(t) + \ln L - \ln H \\[1em]
+    &\implies \frac{\ldot}{\lambda} = -\rho -\theta\frac{\dot C}{C}+\frac{\dot L}{L}
+\intertext{And noting that the growth rate of labor is $n$}
+    &\implies \frac{\ldot}{\lambda} = -\rho -\theta\frac{\dot C}{C}+n
+\intertext{Then the second FONC is}
+H_k = -\ldot &\implies -\frac{\ldot}{\lambda} = f'(k) - (n+g)
+\intertext{And noting that $f'(k)=r(t)=r$,}
+    &\implies -\frac{\ldot}{\lambda} = r - n -g
+\intertext{Putting these first two FONCs together, we have}
+r - n -g &= \rho +\theta\frac{\dot C}{C} -n \\[1em]
+\frac{\dot C}{C} &= \frac{1}{\theta}(r-g-\rho)
+\intertext{Since this is a constant, this implies that}
+C(t) &= Ae^{-\frac{1}{\theta}(g+\rho-r)}
+\intertext{For some constant $A$ determined by the initial capital stock $k_0$ and the law of motion $\kdot = f(k)-C(t)-(n+g)k$.}
+\end{align*}
 
 
 
@@ -146,7 +213,7 @@ It must change discontinuously in order to jump on a path that leads to the sadd
 }
 
 
-
+\includegraphics[width=0.6\textwidth]{3.e}
 
 
 
