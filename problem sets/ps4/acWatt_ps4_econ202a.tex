@@ -3,7 +3,7 @@
 \graphicspath{{pics}}
 
 \begin{document}
-\chead{Problem Set 3}
+\chead{Problem Set 4}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                  Definitions                %
@@ -25,38 +25,33 @@
 %                Problem 1                    %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{Problem 1}
-\problem{The elasticity of substitution with constant-relative-risk-aversion utility: Romer 2.2}{
-    Consider an individual who lives for two periods and whose utility is given by equation (2.43). Let $P_1$ and $P_2$ denote the prices of consumption in the two periods, and let $W$ denote the value of the individual’s lifetime income; thus the budget constraint is $P_1C_1 + P_2C_2 = W$.
+\problem{Growth Accounting in Solow: Romer 1.15}{
+    Consider a Solow economy on its balanced growth path. Suppose the growth accounting techniques described in Section 1.7 are applied to this economy.
 
     \begin{enumerate}[label=(\alph*)]
-    \item What are the individual’s utility-maximizing choices of $C_1$ and $C_2$, given $P_1$, $P_2$, and $W$?
+    \item What fraction of growth in output per worker does growth accounting attribute to growth in capital per worker? What fraction does it attribute to technological progress?
     \end{enumerate} 
 }
-
-
-\def\cone{\frac{C_{1t}^{1-\theta}}{1-\theta}}
-\def\ctwo{\frac{1}{1+\rho}\frac{C_{2(t+1)}^{1-\theta}}{1-\theta}}
+\def\ydoty{\frac{\dot Y}{Y}}
+\def\adota{\frac{\dot A}{A}}
+\def\kdotk{\frac{\dot K}{K}}
+\def\ldotl{\frac{\dot L}{L}}
 \begin{align*}
-\intertext{The Lagrangian for this problem is}
-\L &= U(t) + \lambda (W - P_1C_1 - P_2C_2) \\[1em]
-    &= \cone + \ctwo + \lambda (W - P_1C_1 - P_2C_2) \\[1em]
-\intertext{Supressing the $t$ subscript, we the FOCs are}
-\part{\L}{C_1} &= 0 \implies \frac{1}{\lambda} = P_1 C_1^\theta \\[1em]
-\part{\L}{C_2} &= 0 \implies \frac{1}{\lambda} = P_2 C_2^\theta (1+\rho) \\[1em]
-\intertext{So}
-P_1 C_1^\theta &= P_2 C_2^\theta (1+\rho) \\[1em]
-C_1 &= C_2\l[\frac{P_2}{P_1}(1+\rho)\r]^{1/\theta}
-\intertext{Plugging this into the budget constraint...}
-W &= P_1C_1 + P_2C_2 \\[1em]
-    &= P_1C_2\l[\frac{P_2}{P_1}(1+\rho)\r]^{1/\theta} + P_2C_2 \\[1em]
-    &= P_2C_2\l\{\l[\l(\frac{P_1}{P_2}\r)^{\theta-1}(1+\rho)\r]^{1/\theta} + 1\r\} \\[1em]
-\intertext{So the optimal period 2 consumption is}
-C_2^* &= \frac{W}{ P_2\l\{\l[\l(\frac{P_1}{P_2}\r)^{\theta-1}(1+\rho)\r]^{1/\theta} + 1\r\}}
-\intertext{And the optimal period 1 consumption is}
-C_1^* &= C_2^*\l[\frac{P_2}{P_1}(1+\rho)\r]^{1/\theta} \\[1em]
-    &= \frac{W\l[\frac{P_2}{P_1}(1+\rho)\r]^{1/\theta}}{ P_2\l\{\l[\l(\frac{P_1}{P_2}\r)^{\theta-1}(1+\rho)\r]^{1/\theta} + 1\r\}}
-\intertext{Which probably simplifies...}
+\intertext{From section 1.7, we know that the growth rate of output per worker in the Solow model can be expressed as}
+    \ydoty - \ldotl &= \alpha_K \l[\kdotk - \ldotl \r] + R
+\intertext{On the balanced growth path, we know that}
+    \ydoty &= n+g, \quad
+    \ldotl = n, \quad
+    \kdotk = n+g
+\intertext{and using logs and derivatives, we know that}
+    \frac{\dot y}{y} &= \ydoty - \ldotl \implies \frac{\dot y}{y} = g
+\intertext{Plugging these balanced growth path properties into the first equation, we have}
+    n+g-n &= \alpha_K (n+g-n) + R\\
+    g &= \alpha_K g + R\\
+    \implies R &= (1-\alpha_K)g
+\intertext{So, on the balanced growth path, we know output per worker is growing at rate $g$, and that growth in capital per worker contributes $\alpha_K g$ and technological progress contributes $(1-\alpha_K)g$. So the fraction of growth in output per worker attributable to growth in capital per worker is $\alpha_K$, and $(1-\alpha_K)$ is the fraction attributable to growth in technological progress.}
 \end{align*}
+
 
 
 
@@ -66,26 +61,11 @@ C_1^* &= C_2^*\l[\frac{P_2}{P_1}(1+\rho)\r]^{1/\theta} \\[1em]
 \newpage\problem{}{
     \begin{enumerate}[label=(\alph*)]
     \setcounter{enumi}{1}
-    \item The elasticity of substitution between consumption in the two periods is
-$-[(P_1/P_2)/(C_1/C_2)][\partial(C_1/C_2)/\partial(P_1/P_2)]$, or $-\partial \ln (C_1/C_2)/\partial \ln (P_1/P_2)$. Show that
-with the utility function (2.43), the elasticity of substitution between $C_1$ and
-$C_2$ is $1/\theta$.
+    \item How can you reconcile your results in (a) with the fact that the Solow model implies that the growth rate of output per worker on the balanced growth path is determined solely by the rate of technological progress?
     \end{enumerate} 
 }
 
-
-\begin{align*}
-\intertext{Since we know that}
-\frac{C_1^*}{C_2^*} &= \l[\frac{P_2}{P_1}(1+\rho)\r]^{1/\theta}
-\intertext{Then}
-\ln\frac{C_1^*}{C_2^*} &= \frac{1}{\theta}\ln\l[\frac{P_2}{P_1}(1+\rho)\r] \\[1em]
-    &=\frac{1}{\theta}\l[\ln(1+\rho) - \ln\frac{P_1}{P_2} \r]
-\intertext{So}
-\part{\ln\dfrac{C_1^*}{C_2^*}}{\ln\dfrac{P_1}{P_2}}
-    &= -\frac{1}{\theta}
-\end{align*}
-
-
+As Romer states, growth accounting only examines the immediate determinants of growth -- it is not accounting for what is driving the growth of capital versus technological progress. Since we know that long-term growth in the Solow model is only coming from technological progress, we can guess that, in the long run, technological progress is causing capital per worker to increase. So when we look in the short run using growth accounting, we see capital per worker contributing to growth in output per worker, but this is merely growth in technological progress indirectly affecting output via capital per worker.
 
 
 
@@ -94,45 +74,26 @@ $C_2$ is $1/\theta$.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \section*{Problem 2}
-\problem{Find the utility-maximizing path of $C$: Romer 2.5}{
-    Consider a household with utility given by (2.2) (2.3). Assume that the real interest
-rate is constant, and let $W$ denote the household’s initial wealth plus the present
-value of its lifetime labor income (the right-hand side of [2.7]). Find the utility-maximizing path of $C$, given $r$, $W$, and the parameters of the utility function.
-}
+\problem{Convergence and Measurement Error: Romer 1.16}{
+    
 
-\def\ut{\frac{C(t)^{1-\theta}}{1-\theta}}
-\def\lh{\frac{L(t)}{H}}
-\def\lt{\lambda(t)}
-\def\ldot{\dot\lambda}
+    \begin{enumerate}[label=(\alph*)]
+    \item In the model of convergence and measurement error in equations (1.39) and (1.40), suppose the true value of $b$ is -1. Does a regression of $\ln(Y/N )_{1979} - \ln(Y/N)_{1870}$ on a constant and $\ln(Y/N)_{1870}$ yield a biased estimate of $b$? Explain.
+    \end{enumerate} 
+}
+\def\tx{\tilde x}
 \begin{align*}
-\intertext{First note that since $r(t)=r$ is a constant, }
-R(t) &= \int_0^tr(s)dt = \int_0^trdt = rt
-\intertext{so the path of consumption satisfies}
-\argmax_{C(t)} & \int_0^\infty e^{-\rho t}\ut\lh dt
-\intertext{subject to the conditions}
-    & \int_0^\infty e^{-rt}C(t)\lh dt \leq W\\[1em]
-    & \kdot = f(k) - C - (n+g)k \\[1em]
-    & f'(k) = r(t) = r
-\intertext{So the Hamiltonian for this problem is}
-H &= e^{-\rho t}\ut\lh + \lt
-    \l[f(k(t)) - C(t) - (n+g)k(t)\r]
-\intertext{And the first FONC is}
-H_C = 0 &\implies \lt = e^{-\rho t}C(t)^{-\theta}\lh
-\intertext{taking logs and then the time derivative gives}
-    &\implies \ln\lt = -\rho t -\theta\ln C(t) + \ln L - \ln H \\[1em]
-    &\implies \frac{\ldot}{\lambda} = -\rho -\theta\frac{\dot C}{C}+\frac{\dot L}{L}
-\intertext{And noting that the growth rate of labor is $n$}
-    &\implies \frac{\ldot}{\lambda} = -\rho -\theta\frac{\dot C}{C}+n
-\intertext{Then the second FONC is}
-H_k = -\ldot &\implies -\frac{\ldot}{\lambda} = f'(k) - (n+g)
-\intertext{And noting that $f'(k)=r(t)=r$,}
-    &\implies -\frac{\ldot}{\lambda} = r - n -g
-\intertext{Putting these first two FONCs together, we have}
-r - n -g &= \rho +\theta\frac{\dot C}{C} -n \\[1em]
-\frac{\dot C}{C} &= \frac{1}{\theta}(r-g-\rho)
-\intertext{Since this is a constant, this implies that}
-C(t) &= Ae^{-\frac{1}{\theta}(g+\rho-r)}
-\intertext{For some constant $A$ determined by the initial capital stock $k_0$ and the law of motion $\kdot = f(k)-C(t)-(n+g)k$.}
+\intertext{Let $y=\ln(Y/N )_{1979}$ and $x=\ln(Y/N)_{1870}$, then the linear model of the true data would look like}
+    y - x &= a + bx +\varepsilon
+\intertext{Assuming that there is some measurement error $u$ in $x$, so we actually measure $\tx = x + u$ the model becomes}
+    y - x &= a + bx +\varepsilon \\
+    y - (\tx - u) &= a + b(\tx-u) + \varepsilon
+\intertext{Rearranging the terms so both the econometric error and measurement error are lumped into the residual, we have}
+    y - \tx &= a + b\tx + (\varepsilon - bu - u) \\
+        &= a + b\tx + (\varepsilon - (b+1)u)
+\intertext{If $b\neq -1$, then we would have an endogeneity bias because $u$ is in the error term and correlated with $\tx$. Because $u$ and $\tx$ are positively correlated, we can sign this bias -- if $b>-1$, the bias is negative. However, if the true value of $b$ is exactly -1, the model reverts to}
+    y - x &= a + bx + \varepsilon
+\intertext{and there would be no bias in our OLS estimate of $b$. Thus, an OLS estimate of $b$ of -1 is indistinguishable from the true value of $b$ being -1 or a case of measurement error biasing down our OLS estimate.}
 \end{align*}
 
 
@@ -140,6 +101,28 @@ C(t) &= Ae^{-\frac{1}{\theta}(g+\rho-r)}
 
 
 
+
+%%%%%%%%%%%%%%%%%
+%     Part b    %
+%%%%%%%%%%%%%%%%%
+\newpage\problem{}{
+    \begin{enumerate}[label=(\alph*)]
+    \setcounter{enumi}{1}
+    \item Suppose there is measurement error in measured 1979 income per capita but not in 1870 income per capita. Does a regression of $\ln(Y/N )_{1979} - \ln(Y/N)_{1870}$ on a constant and $\ln(Y/N)_{1870}$ yield a biased estimate of b? Explain.
+    \end{enumerate} 
+}
+
+\def\ty{\tilde y}
+\begin{align*}
+\intertext{Again, let $y=\ln(Y/N )_{1979}$ and $x=\ln(Y/N)_{1870}$, then the linear model of the true data would look like}
+    y - x &= a + bx +\varepsilon
+\intertext{In the case where $y$ has measurement error $v$, we actually measure $\ty = y + v$ the model becomes}
+    y - x &= a + bx +\varepsilon \\
+    \ty - v - x &= a + bx + \varepsilon
+\intertext{Rearranging the terms so both the econometric error and measurement error are lumped into the residual, we have}
+    \ty - x &= a + bx + (\varepsilon +v)
+\intertext{If we assume that the measurement error in $y$ is independent of $x$, then there is no endogeneity bias coming from the measurement error $v$. Thus OLS of $\ty$ on $x$ and a constant will give us unbiased estimates of $b$, though the standard errors will be larger than with no measurement error.}
+\end{align*}
 
 
 
@@ -149,14 +132,30 @@ C(t) &= Ae^{-\frac{1}{\theta}(g+\rho-r)}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \section*{Problem 3}
-\problem{Using the phase diagram to analyze the impact of an anticipated change: Romer 2.11}{
-    Consider the policy described in Problem 2.10, but suppose that instead of announcing and implementing the tax at time 0, the government announces at time 0 that at some later time, time $t_1$, investment income will begin to be taxed at rate $\tau$.
+\problem{Education Consequences in Production Function 1: Romer 4.3}{
+    Suppose output in country i is given by $Y_i = A_i Q_i e^{\phi E_i} L_i$. Here $E_i$ is each worker’s years of education, $Q_i$ is the quality of education, and the rest of the notation is standard. Higher output per worker raises the quality of education. Specifically, $Q_i$ is given by $B_i(Y_i/L_i)^\gamma,\ 0 < \gamma < 1,\ B_i > 0$.
+    
+    Our goal is to decompose the difference in log output per worker between two countries, 1 and 2, into the contributions of education and all other forces. We have data on $Y$, $L$, and $E$ in the two countries, and we know the values of the parameters $\phi$ and $\gamma$.
 
     \begin{enumerate}[label=(\alph*)]
-        \item Draw the phase diagram showing the dynamics of $c$ and $k$ after time $t_1$.
+        \item Explain in what way attributing amount $\phi(E_2 - E_1)$ of $\ln(Y_2/L_2) - \ln(Y_1/L_1)$ to education and the remainder to other forces would understate the contribution of education to the difference in log output per worker between the two countries.
     \end{enumerate} 
 }
-\includegraphics[width=0.8\textwidth]{3.a}
+
+\begin{align*}
+\intertext{For the moment, I will drop the $i$ subscripts for ease of exposition. Plugging in our form of $Q$ into $Y$, we have}
+    Y &=  AB\l(\frac{Y}{L}\r)^\gamma e^{\phi E}L
+\intertext{taking logs we have}
+    \ln Y &= \ln A B +\gamma (\ln Y - \ln L) + \phi E + \ln L
+\intertext{Solving for $\ln Y - \ln L$ we get}
+    \ln \frac{Y}{L} &= \frac{1}{1-\gamma}\ln A B + \frac{\phi}{1-\gamma}E
+\intertext{So the difference in log output per worker between country 1 and 2 is}
+\ln \frac{Y_2}{L_2} - \ln\frac{Y_1}{L_1} &= \frac{1}{1-\gamma}\ln \frac{A_2B_2}{A_1B_1} + \frac{\phi}{1-\gamma}(E_2-E_1)
+\intertext{Since $\gamma \in (0,1)$, then $\dfrac{1}{1-\gamma}>1$ and }
+    \phi(E_2-E_1) &< \frac{\phi}{1-\gamma}(E_2-E_1)
+\intertext{So $\phi(E_2-E_1)$ would understate the fraction of the difference in log output per worker by a factor of $\dfrac{1}{1-\gamma}$.}
+\end{align*}
+
 
 
 
@@ -166,11 +165,47 @@ C(t) &= Ae^{-\frac{1}{\theta}(g+\rho-r)}
 \newpage\problem{}{
     \begin{enumerate}[label=(\alph*)]
     \setcounter{enumi}{1}
-    \item Can $c$ change discontinuously at time $t_1$? Why or why not?
+    \item What would be a better measure of the contribution of education to the difference in log output per worker?
     \end{enumerate} 
 }
-No, if $c$ changed discontinuously at $t_1$, that would indicate that the consumers were not consumption smoothing before $t_1$ even though they had know about the change in tax rate since $t=0$. So, right before $t_1$, $c$ must be approaching the new value it will have at the time of the tax change $t_1$.
 
+\begin{align*}
+\intertext{Assuming technological progress is independent of education, then }
+\frac{\phi}{1-\gamma}(E_2-E_1)&
+\intertext{would be a better measure of the contribution of education to the difference in log output per worker. However, we know that education has major impacts on innovation and technological development, so we would want to account for how $E$ is changing the path of $A$ in the long run. }
+\end{align*}
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                Problem 4                    %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section*{Problem 4}
+\problem{Education Consequences in Production Function 2: Romer 4.4}{
+    Suppose the production function is $Y = K^\alpha (e^{\phi E} L)^{1-\alpha}, 0<\alpha<1$. $E$ is the amount of education workers receive; the rest of the notation is standard. Assume that there is perfect capital mobility. In particular, $K$ always adjusts so that the marginal product of capital equals the world rate of return, $r^*$.
+
+    \begin{enumerate}[label=(\alph*)]
+        \item Find an expression for the marginal product of capital as a function of $K$, $E$, $L$, and the parameters of the production function.
+    \end{enumerate} 
+}
+
+Ran out of time to finish, oops!
+
+
+%%%%%%%%%%%%%%%%%
+%     Part b    %
+%%%%%%%%%%%%%%%%%
+\newpage\problem{}{
+    \begin{enumerate}[label=(\alph*)]
+    \setcounter{enumi}{1}
+    \item Use the equation you derived in (a) to find $K$ as a function of $r^*$, $E$, $L$, and the parameters of the production function.
+    \end{enumerate} 
+}
 
 
 %%%%%%%%%%%%%%%%%
@@ -180,12 +215,9 @@ No, if $c$ changed discontinuously at $t_1$, that would indicate that the consum
 \problem{}{
     \begin{enumerate}[label=(\alph*)]
     \setcounter{enumi}{2}
-    \item Draw the phase diagram showing the dynamics of $c$ and $k$ before $t_1$.
+    \item Use your answer in (b) to find an expression for $d(\ln Y)/dE$, incorporating the effect of $E$ on $Y$ via $K$.
     \end{enumerate} 
 }
-
-\includegraphics[width=0.8\textwidth]{3.a}
-
 
 
 %%%%%%%%%%%%%%%%%
@@ -194,26 +226,9 @@ No, if $c$ changed discontinuously at $t_1$, that would indicate that the consum
 \newpage\problem{}{
     \begin{enumerate}[label=(\alph*)]
     \setcounter{enumi}{3}
-    \item In light of your answers to parts (a), (b), and (c), what must $c$ do at time 0?
+    \item Explain intuitively how capital mobility affects the impact of the change in $E$ on output.
     \end{enumerate} 
 }
-
-It must change discontinuously in order to jump on a path that leads to the saddle path that it will be on at $t_1$.
-
-
-
-%%%%%%%%%%%%%%%%%
-%     Part e    %
-%%%%%%%%%%%%%%%%%
-\newpage\problem{}{
-    \begin{enumerate}[label=(\alph*)]
-    \setcounter{enumi}{4}
-    \item Summarize your results by sketching the paths of $c$ and $k$ as functions of time.
-    \end{enumerate} 
-}
-
-
-\includegraphics[width=0.6\textwidth]{3.e}
 
 
 
