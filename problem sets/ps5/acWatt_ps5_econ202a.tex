@@ -3,7 +3,7 @@
 \graphicspath{{pics}}
 \begin{document}
 % \maketitle
-\chead{Problem Set 1}
+\chead{Problem Set 5}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                  Definitions                %
@@ -27,18 +27,83 @@
 %%%%%%%%%%%%%%%%%
 
 
+\def\xdot{\dot X} \def\ydot{\dot Y} \def\zdot{\dot Z}
+\def\kdot{\dot k} \def\ccdot{\dot c} \def\ddt{\frac{d}{dt}}
+\def\dfdk{\frac{\partial F}{\partial K}}
+\def\dfdl{\frac{\partial F}{\partial L}}
+\def\plim{\lim\limits_{\phi\to 0}}
+\def\ddp{\dfrac{\partial}{\partial \phi}}
+\def\dgdp{\dfrac{\partial\gamma}{\partial \phi}}
+\def\invphi{\sfrac{1}{\phi}}
+\def\kone{k^*_1} \def\ktwo{k^*_2}
+\def\adot{\dot A}
+\def\ga{g_A^*}
+\def\gk{g_K^*}
+\def\gadot{\dot g_A} \def\gkdot{\dot g_K}
+\newcommand{\growth}[1]{\frac{\dot #1}{#1}}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                Problem 1                    %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{Problem 1}
-\problem{Problem name}{
-    Problem description
+\problem{No-Capital Model: Romer 3.1}{
+    Consider the model of Section 3.2 with $\theta<1$.
+
+    \begin{enumerate}[label=(\alph*)]
+    \item On the balanced growth path, $\adot = g_A^* A$ where $g_A^*$ is the balanced-growth-path value of $g_A$. Use this fact and equation (3.6) to derive an expression for $A(t)$ on the balanced growth path in terms of $B, a_L , \gamma, \theta,$ and $L(t )$.
+    \end{enumerate} 
 }
 
-\begin{align} 
-    \intertext{stuff}
-    y&=x
-\end{align}
+\begin{align*} 
+\intertext{First, we can begin by finding an expression for $g_A$.}
+    \adot &= \ga A \\
+    \adot &= B(a_L L)^\gamma A^\theta \\
+    \implies \ga &=  B(a_L L)^\gamma A^{\theta-1}
+\intertext{On the balanced growth path, the growth rate $g_A$ is constant. So $\dot g_A=0$. We can find $\dot g_A$ by taking the time derivative of $\ln\ga$}
+    \ln\ga &= \ln(Ba_L^\gamma) + \gamma \ln L + (\theta-1)\ln A \\
+    \growth{\ga} &= \gamma \growth{L} + (\theta-1)\growth{A} \\
+        &= \gamma n + (\theta-1)g_A
+    \intertext{Since $\dot g_A=0$ on the BGP,}
+    \ga &= \frac{\gamma n}{(1-\theta)}
+\intertext{From earlier, this implies}
+    \frac{\gamma n}{(1-\theta)} &= B(a_L L)^\gamma A^{\theta-1}
+\intertext{And solving for $A$ yields}
+    A &= \l[B(a_L L)^\gamma\  \frac{(1-\theta)}{\gamma n}\r]^{\dfrac{1}{1-\theta}}
+\end{align*}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%
+%     Part b    %
+%%%%%%%%%%%%%%%%%
+\newpage\problem{}{
+    \begin{enumerate}[label=(\alph*)]
+    \setcounter{enumi}{1}
+    \item Use your answer to part (a) and the production function, (3.5), to obtain an expression for $Y(t)$ on the balanced growth path. Find the value of $a_L$ that maximizes output on the balanced growth path.
+    \end{enumerate} 
+}
+
+
+\begin{align*}
+    Y &= A(1-a_L)L
+\intertext{Plugging in our $A$ function from part (a), we get}
+    Y &= \l[B(a_L L)^\gamma\  \frac{(1-\theta)}{\gamma n}\r]^{\dfrac{1}{1-\theta}}(1-a_L)L
+\intertext{Since our goal is to maximize $Y$, we can simplify by maximizing $\ln Y$ instead:}
+    \ln Y &= \frac{1}{(1-\theta)}\ln\l(BL^\gamma\frac{(1-\theta)}{\gamma n} \r) +
+        \frac{\gamma}{(1-\theta)}\ln a_L +
+        \ln(1-a_L) +\ln L
+\intertext{Then the FOC of $\ln Y$ is}
+    \part{\ln Y}{a_L} &= \frac{\gamma}{(1-\theta)}\frac{1}{a_L} - \frac{1}{1-a_L}
+        =0\\
+    \implies a_L &  = \frac{\gamma}{1-\theta +\gamma}
+\end{align*}
+
+
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -46,14 +111,90 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \section*{Problem 2}
-\problem{Problem name}{
-    Problem description
-}
-\begin{align} 
-    \intertext{stuff}
-    y&=x
-\end{align}
+\problem{A model with Capital: Romer 3.3}{
+    Consider the economy analyzed in Section 3.3. Assume that $\theta + \beta <1$ and $n > 0$, and that the economy is on its balanced growth path. Describe how each of the following changes affect the $\dot g_A=0$ and $\dot g_K =0$ lines and the position of the economy in $(g_A, g_K)$ space at the moment of the change:
 
+    \begin{enumerate}[label=(\alph*)]
+    \item An increase in $n$.
+    \end{enumerate} 
+}
+\begin{align*} 
+\intertext{The $\gadot=0$ line is defined by}
+    \gadot &= 0 =\beta g_K +\gamma n +(\theta-1)g_A\\
+    \implies g_K &= \frac{1-\theta}{\beta}g_A - \frac{\gamma}{\beta}n
+\intertext{Which means the $\gadot=0$ line shifts vertically downward by $\dfrac{\gamma}{\beta}$ for every 1-unit increase in $n$.}
+\intertext{Similarly, the $\gkdot=0$ line is defined by}
+    \gkdot &= 0 = (1-\alpha)(g_A+n-g_K)\\
+    \implies g_K &= g_A + n
+\intertext{So the $\gkdot=0$ line shifts vertically up by the amount $n$ has increased.}
+\intertext{In the case that $\theta + \beta <1$, we know that }
+    \ga &= \frac{\beta+\gamma}{1-(\theta+\beta)}n
+\intertext{So $\ga$ has shifted out by $\dfrac{\beta+\gamma}{1-(\theta+\beta)}$ for every 1-unit increase in $n$.}
+\intertext{We know that $g_K = g_A + n$, so}
+    \gk &= \l[\frac{\beta+\gamma}{1-(\theta+\beta)} + 1\r]n
+\intertext{And $\gk$ shifts up. Thus the new BGP position of the economy in $(g_A, g_K)$ space at the moment of the change is out and up compared to the old position in $(g_A, g_K)$ space.}
+\intertext{From section 3.3, we know that}
+    g_K &= s(1-a_K)^\alpha (1-a_L)^{1-\alpha}
+        \l[ \frac{AL}{K}\r]^{1-\alpha}
+\intertext{and}
+    g_A &= B a_K^\beta a_L^\gamma 
+        K^\beta L^\gamma A^{\theta-1}
+\intertext{Since $n$ isn't in either of these equations, and $K,L,A$ all need to change continuously, there is no jump in the location of the economy in $(g_A, g_K)$ space at the moment of the change. The economy smoothly moves outward in $(g_A, g_K)$ space toward the new $\ga,\gk$ location.}
+\end{align*}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%
+%     Part b    %
+%%%%%%%%%%%%%%%%%
+\newpage\problem{}{
+    \begin{enumerate}[label=(\alph*)]
+    \setcounter{enumi}{1}
+    \item An increase in $a_K$.
+    \end{enumerate} 
+}
+
+\begin{align*}
+\intertext{From part (a), we have that }
+    \ga &= \frac{\beta+\gamma}{1-(\theta+\beta)}n\\
+    \gk &= \l[\frac{\beta+\gamma}{1-(\theta+\beta)} + 1\r]n
+\intertext{Thus there is no change in the BGP location in $(g_A, g_K)$ space. }
+\intertext{From section 3.3, we know that}
+    g_K &= s(1-a_K)^\alpha (1-a_L)^{1-\alpha}
+        \l[ \frac{AL}{K}\r]^{1-\alpha}
+\intertext{and}
+    g_A &= B a_K^\beta a_L^\gamma 
+        K^\beta L^\gamma A^{\theta-1}
+\intertext{So immediately after the increase in $a_K$, the economy jumps to a point down and to the right of the old BGP location. And then the economy will decrease $g_A$ and increase $g_K$ in order to get back to the BGP location.}
+\end{align*}
+
+
+
+
+%%%%%%%%%%%%%%%%%
+%     Part c    %
+%%%%%%%%%%%%%%%%%
+\newpage\problem{}{
+    \begin{enumerate}[label=(\alph*)]
+    \setcounter{enumi}{2}
+    \item An increase in $\theta$.
+    \end{enumerate} 
+}
+
+\begin{align*}
+\intertext{From section 3.3, we know that}
+    g_K &= s(1-a_K)^\alpha (1-a_L)^{1-\alpha}
+        \l[ \frac{AL}{K}\r]^{1-\alpha}\\
+    g_A &= B a_K^\beta a_L^\gamma 
+        K^\beta L^\gamma A^{\theta-1}
+\intertext{So the economy does not jump in $(g_A, g_K)$ space. 
+We also know that }
+    \ga &= \frac{\beta+\gamma}{1-(\theta+\beta)}n\\
+    \gk &= \l[\frac{\beta+\gamma}{1-(\theta+\beta)} + 1\r]n
+\intertext{So $\ga$ shifts to inward (to the left) and $\gk$ shifts downward. Thus the economy moves smoothly down and to the left in $(g_A, g_K)$ space.}
+\end{align*}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -61,120 +202,137 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \section*{Problem 3}
-\problem{Problem name}{
-    Problem description
+\problem{Identical capital and knowledge growth rates: Romer 3.5}{
+    Consider the model of Section 3.3 with $\beta + \theta = 1$ and $n = 0$.
+
+    \begin{enumerate}[label=(\alph*)]
+    \item Using (3.14) and (3.16), find the value that $A/K$ must have for $g_K$ and $g_A$ to be equal.
+    \end{enumerate} 
 }
 
-\begin{align} 
-    \intertext{stuff}
-    y&=x
-\end{align}
+\begin{align*} 
+\intertext{Equations (3.14) and (3.16) give}
+    g_K &= s(1-a_K)^\alpha (1-a_L)^{1-\alpha}
+        \l[ \frac{AL}{K}\r]^{1-\alpha}\\
+    g_A &= B a_K^\beta a_L^\gamma 
+        K^\beta L^\gamma A^{\theta-1}
+\intertext{Setting these equal gives}
+    g_K &= g_A \\
+    s(1-a_K)^\alpha (1-a_L)^{1-\alpha}
+        \l( \frac{AL}{K}\r)^{1-\alpha}
+    &=B a_K^\beta a_L^\gamma 
+        K^\beta L^\gamma A^{\theta-1}\\
+\intertext{Since $\beta + \theta = 1$, the right hand side becomes}
+    s(1-a_K)^\alpha (1-a_L)^{1-\alpha}
+        \l( \frac{AL}{K}\r)^{1-\alpha}
+    &=B a_K^\beta a_L^\gamma 
+        \l(\frac{A}{K}\r)^{-\beta} L^\gamma\\
+    s(1-a_K)^\alpha (1-a_L)^{1-\alpha}
+        \l(\frac{A}{K}\r)^{1-\alpha}L^{1-\alpha}
+    &=B a_K^\beta a_L^\gamma 
+        \l(\frac{A}{K}\r)^{-\beta} L^\gamma\\
+    \l(\frac{A}{K}\r)^{1-\alpha+\beta}
+    &=\frac{B a_K^\beta a_L^\gamma 
+         L^{\gamma+\alpha-1}}{s(1-a_K)^\alpha (1-a_L)^{1-\alpha}}\\
+    \frac{A}{K}
+    &=\l[\frac{B a_K^\beta a_L^\gamma 
+         L^{\gamma+\alpha-1}}{s(1-a_K)^\alpha (1-a_L)^{1-\alpha}}\r]^{\dfrac{1}{1-\alpha+\beta}}\\
+\end{align*}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                Problem 4                    %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
-\section*{Problem 4}
-\problem{Problem name}{
-    Problem description
+
+
+
+%%%%%%%%%%%%%%%%%
+%     Part b    %
+%%%%%%%%%%%%%%%%%
+\newpage\problem{}{
+    \begin{enumerate}[label=(\alph*)]
+    \setcounter{enumi}{1}
+    \item Using your result in part (a), find the growth rate of $A$ and $K$ when $g_K = g_A$.
+    \end{enumerate} 
 }
 
-\begin{align} 
-    \intertext{stuff}
-    y&=x
-\end{align}
+\begin{align*}
+\intertext{Plugging in $A/K$ from part (a) into equation (3.14), we get}
+    g \equiv g_K &= s(1-a_K)^\alpha (1-a_L)^{1-\alpha}
+        \l[ \frac{AL}{K}\r]^{1-\alpha}\\
+    &= s(1-a_K)^\alpha (1-a_L)^{1-\alpha}
+        \l[\frac{B a_K^\beta a_L^\gamma 
+         L^{\gamma+\alpha-1}}{s(1-a_K)^\alpha (1-a_L)^{1-\alpha}}\r]^{\dfrac{1-\alpha}{1-\alpha+\beta}}
+         L^{1-\alpha}\\
+\intertext{And consolidating the $L$ terms, we have}
+    &= s(1-a_K)^\alpha (1-a_L)^{1-\alpha}
+        \l[\frac{B a_K^\beta a_L^\gamma}{s(1-a_K)^\alpha (1-a_L)^{1-\alpha}}\r]^{\dfrac{1-\alpha}{1-\alpha+\beta}}
+         L^{\frac{(\gamma+\alpha-1)(1-\alpha)}{1-\alpha+\beta}}L^{1-\alpha}\\
+    &= s(1-a_K)^\alpha (1-a_L)^{1-\alpha}
+        \l[\frac{B a_K^\beta a_L^\gamma}{s(1-a_K)^\alpha (1-a_L)^{1-\alpha}}\r]^{\dfrac{1-\alpha}{1-\alpha+\beta}}
+         L^{\dfrac{(\gamma+\beta)(1-\alpha)}{1-\alpha+\beta}}\\
+\intertext{And simplifying the $s,a_K,a_L$ terms, we have}
+    &= \l[s(1-a_K)^\alpha (1-a_L)^{1-\alpha} \r]^{\dfrac{\beta}{1-\alpha+\beta}}
+        \l[B a_K^\beta a_L^\gamma\r]^{\dfrac{1-\alpha}{1-\alpha+\beta}}
+        L^{\dfrac{(\gamma+\beta)(1-\alpha)}{1-\alpha+\beta}}
+\end{align*}
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                Problem 5                    %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
-\section*{Problem 5}
-\problem{Problem name}{
-    Problem description
+
+%%%%%%%%%%%%%%%%%
+%     Part c    %
+%%%%%%%%%%%%%%%%%
+\newpage\problem{}{
+    \begin{enumerate}[label=(\alph*)]
+    \setcounter{enumi}{2}
+    \item How does an increase in $s$ affect the long-run growth rate of the economy?
+    \end{enumerate} 
 }
 
-\begin{align} 
-    \intertext{stuff}
-    y&=x
-\end{align}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                Problem 6                    %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section*{Problem 6}
-\problem{Problem name}{
-    Problem description
+\begin{align*}
+\intertext{Since $n=0$, the growth rate of the economy is }
+    \frac{\ydot}{Y} &= \alpha g_K + (1-\alpha)g_A
+\intertext{and since $g_K = g_A = g$}
+    &= g\\
+    &= \l[s(1-a_K)^\alpha (1-a_L)^{1-\alpha} \r]^{\dfrac{\beta}{1-\alpha+\beta}}
+        \l[B a_K^\beta a_L^\gamma\r]^{\dfrac{1-\alpha}{1-\alpha+\beta}}
+        L^{\dfrac{(\gamma+\beta)(1-\alpha)}{1-\alpha+\beta}}
+\intertext{So an increase in $s$ by 1\% will increase the long-run growth rate of the economy by approximately a factor of $1.01^{\dfrac{\beta}{1-\alpha+\beta}}$. Since $\frac{\beta}{1-\alpha+\beta}<1$, this factor is between 1 and 1.01. }
+\end{align*}
+
+
+
+
+%%%%%%%%%%%%%%%%%
+%     Part d    %
+%%%%%%%%%%%%%%%%%
+\newpage\problem{}{
+    \begin{enumerate}[label=(\alph*)]
+    \setcounter{enumi}{3}
+    \item What value of $a_K$ maximizes the long-run growth rate of the economy? Intuitively, why is this value not increasing in $\theta$, the importance of capital in the R\&D sector?
+    \end{enumerate} 
 }
 
-\begin{align} 
-    \intertext{stuff}
-    y&=x
-\end{align}
 
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                Problem 7                    %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section*{Problem 7}
-\problem{Problem name}{
-    Problem description
-}
-
-\begin{align} 
-    \intertext{stuff}
-    y&=x
-\end{align}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                Problem 8                    %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section*{Problem 8}
-\problem{Problem name}{
-    Problem description
-}
-
-\begin{align} 
-    \intertext{stuff}
-    y&=x
-\end{align}
+\begin{align*}
+\intertext{To maximize the long-run growth, we want to maximize $g$. We can also maximize $\ln g$:}
+    \ln g &= \frac{\beta}{1-\alpha+\beta}\ln\l[s(1-a_K)^\alpha (1-a_L)^{1-\alpha} \r] + 
+        \frac{1-\alpha}{1-\alpha+\beta}\ln\l[B a_K^\beta a_L^\gamma\r] +
+        \frac{(\gamma+\beta)(1-\alpha)}{1-\alpha+\beta}\ln L \\
+    &= \frac{\beta\alpha}{1-\alpha+\beta}\ln(1-a_K) + 
+        \frac{(1-\alpha)\beta}{1-\alpha+\beta}\ln a_K + \text{non-$a_K$ terms}
+\intertext{Then the FOC for $a_K$ is}
+    \frac{(1-\alpha)\beta}{(1-\alpha+\beta)a_K} 
+        &= \frac{\beta\alpha}{(1-\alpha+\beta)(1-a_K)}\\
+    a_K\alpha &= (1-a_K)(1-\alpha)\\
+        &= 1 -\alpha - a_K(1-\alpha)\\
+    (\alpha +1 -\alpha)a_K &= 1-\alpha \\
+    a_K &= 1-\alpha
+\end{align*}
 
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                Problem 9                    %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section*{Problem 9}
-\problem{Problem name}{
-    Problem description
-}
-
-\begin{align} 
-    \intertext{stuff}
-    y&=x
-\end{align}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                Problem 10                   %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section*{Problem 10}
-\problem{Problem name}{
-    Problem description
-}
-
-\begin{align} 
-    \intertext{stuff}
-    y&=x
-\end{align}
-
-
-
+In this case of the model, $\beta = 1-\theta$. So, if $\theta$ increased, the effectiveness of knowledge would increase in the sense that an additional unit of $A$ would have larger impacts on $g_A$. But an increase in $\theta$ $\implies$ an decrease in $\beta$, which would decrease the effectiveness of $K$ on $g_A$. So in this case of the model, we can think of the effects of $\theta$ as cancelling out with the effects of $\beta$ on the growth-rate maximizing value of $a_K$.
 
 \end{document}
 
