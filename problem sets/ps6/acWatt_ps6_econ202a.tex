@@ -31,8 +31,13 @@
 %                Problem 1                    %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{Problem 1}
-\problem{Problem name}{
-    Problem description
+\problem{Eat-the-Pie Problem}{
+    Consider a household that must live forever off of an initial stock of wealth $A_0$ that pays a return $R$. The household seeks to maximize the utility function
+    \[\sum\limits_{t=0}^\infty \beta^t u(C_t)\]
+    The household's wealth evolves according to 
+    \[A_{t+1}=R(A_t-C_t)\]
+    The Bellman equation for the household's problem is
+    \[V(A)=\max_{C\in[0,A]}\l\{ u(C)+\beta V(R(A-C)) \r\}\]
 }
 
 \begin{align} 
