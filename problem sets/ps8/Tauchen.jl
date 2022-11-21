@@ -1,4 +1,5 @@
 
+import Pkg; Pkg.add(["Distributions"])
 using Distributions
 cdf_normal(x) = cdf(Normal(),x)
 
@@ -41,6 +42,9 @@ function tauchen(N,mu,rho,sigma,m)
     end 
     
     Z = Z .+ a / (1-rho);
+
+    ZN = m * sqrt(sigma^2 / (1 - rho^2))
+    Z = range(-ZN + mu, ZN + mu, length=N)
     
     for j = 1:N
         for k = 1:N
