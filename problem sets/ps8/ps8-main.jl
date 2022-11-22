@@ -19,13 +19,16 @@ Final version in ps8-notebook.jl
 ==============================================================================#
 import Pkg
 Pkg.activate(pwd())
-Pkg.add(["Plots", "Optim", "Parameters", "Revise"])
-includet("Tauchen.jl")
+try
+    using Optim, Parameters, Plots, Revise
+    pyplot()
+catch e
+    Pkg.add(["Plots", "PyPlot", "Optim", "Parameters", "Revise"])
+    using Optim, Parameters, Plots, Revise
+    pyplot()
+end
+includet("Tauchen.jl")  # Installs Distributions if not installed
 
-using Optim
-using Parameters
-using Plots
-using Revise
 
 
 #==============================================================================
@@ -49,8 +52,8 @@ Be sure to state what variables are chosen and all the constraints.
 Write a version of McKay’s PolyBasis function for this problem. 
 Use a 2nd order polynomial basis (which will have 6 terms).
 =#
-PolyBasis(A::AbstractArray, lnY::AbstractArray) = [ones(size(A)) A lnY A.^2 A.*lnY lnY.^2]  # n x 6
-PolyBasis(A::Real, lnY::Real) = [1, A, lnY, A^2, A*lnY, lnY^2]'  # 1 x 6
+PolyBasis(A::AbstractArray, lnY::AbstractArray) = [ones(size(A)) A lnY A .^ 2 A .* lnY lnY .^ 2]  # n x 6
+PolyBasis(A::Real, lnY::Real) = [1 A lnY A^2 A * lnY lnY^2]  # 1 x 6
 
 
 
@@ -82,17 +85,17 @@ Start your main Matlab program by reading in the parameter values into a structu
     bb = 0.4
     ρ = 0.9
     σ² = 0.01
-    σ = σ²^(1/2)
+    σ = σ²^(1 / 2)
     r = 0.05
     Z = 20
 end
-α = 1/3  # allow α to change for later problems
+α = 1 / 3  # allow α to change for later problems
 
 
 
 # Labor Income
 # Y(Yₜ₋₁, εₜ; ρ=ρ, μ=μ) = exp( (1 − ρ)*log(μ) + ρ*log(Yₜ₋₁) + εₜ )
-lnY(lnYₜ₋₁, εₜ; μ=μ) = (1 - ρ)*log(μ) + ρ*lnYₜ₋₁ + ε
+lnY(lnYₜ₋₁, εₜ; μ=μ) = (1 - ρ) * log(μ) + ρ * lnYₜ₋₁ + ε
 
 
 
@@ -128,17 +131,16 @@ GridPlnY = GridPlnY'  # this is a 7 x 7 transition matrix for which the columns 
 # the (i,j) element is the probability of moving from j to i.
 
 # Using the BC and EE, solve for the steady state asset level
-Aₛₛ = Z*(β * Z * α)^(α/(1-α))
+Aₛₛ = Z * (β * Z * α)^(α / (1 - α))
 
 # Create a grid from 0.05Aₛₛ to 1.95Aₛₛ
 nA = 100  # number of points in our grid for A
-GridA = range(0.05*Aₛₛ, 1.95*Aₛₛ, length=nA)
+GridA = range(0.05 * Aₛₛ, 1.95 * Aₛₛ, length=nA)
 
 # Cartisian product of the grids, then decompose
-AY = [(a,y) for a ∈ GridA for y ∈ GridlnY]
-AA = [a for (a,y) ∈ AY]
-YY = [y for (a,y) ∈ AY]
-
+AY = [(a, y) for y ∈ GridlnY for a ∈ GridA]
+AA = [a for (a, y) ∈ AY]
+YY = [y for (a, y) ∈ AY]
 
 
 
@@ -153,17 +155,17 @@ At+1 = Z(Yt − Ct + At)^α
 =#
 
 # Utility function
-U(C) = C^(1-γ)/(1-γ)
+U(C) = C^(1 - γ) / (1 - γ)
 
 # Just this period's income
 f(lnYₜ, Aₜ; α=α) = exp(lnYₜ) + Aₜ
 # Budget Constraint defines Cₜ(Yₜ, Aₜ, Aₜ₊₁) = income - savings
 # savings = Sₜ = (Aₜ₊₁/Z)^(1/α) from the savings technology
-savings(Aₜ₊₁; α=α) = (Aₜ₊₁/Z)^(1/α)
+savings(Aₜ₊₁; α=α) = (Aₜ₊₁ / Z)^(1 / α)
 c(lnYₜ, Aₜ, Aₜ₊₁; α=α) = f(lnYₜ, Aₜ; α=α) - savings(Aₜ₊₁; α=α)
 # Maximum A' could be for C>0, given Y and A
-Aprime(lnYₜ, Aₜ, Cₜ; α=α) = Z*(exp(lnYₜ) + Aₜ - Cₜ)^α
-max_Ap(lnYₜ, Aₜ; α=α) = Aprime(lnYₜ, Aₜ, 0; α=α) 
+Aprime(lnYₜ, Aₜ, Cₜ; α=α) = Z * (exp(lnYₜ) + Aₜ - Cₜ)^α
+max_Ap(lnYₜ, Aₜ; α=α) = Aprime(lnYₜ, Aₜ, 0; α=α)
 
 """
 V = Bellman(b, Aₜ, lnY, Aₜ₊₁; α=α)
@@ -183,14 +185,14 @@ function Bellman(b::AbstractArray, Aₜ::Real, lnYₜ::Real, Aₜ₊₁::Real; �
     # Scalar A' and lnY, vector of coefficients b
     C = c(lnYₜ, Aₜ, Aₜ₊₁; α=α)
     u = U(C)
-    V = u + β * (PolyBasis(Aₜ, lnYₜ) * b)
+    V = u + β * (PolyBasis(Aₜ₊₁, lnYₜ)*b)[1]
     return V
 end
 function Bellman(b::AbstractArray, Aₜ::AbstractArray, lnYₜ::AbstractArray, Aₜ₊₁::AbstractArray; α=α)
     # Vector A' and lnY, vector of coefficients b
     C = c.(lnYₜ, Aₜ, Aₜ₊₁; α=α)
     u = U.(C)
-    V = u .+ β * (PolyBasis(Aₜ, lnYₜ) * b)
+    V = u .+ β * (PolyBasis(Aₜ₊₁, lnYₜ) * b)
     return V
 end
 function Bellman(EV::Real, Aₜ::Real, lnYₜ::Real, Aₜ₊₁::Real; α=α)
@@ -232,7 +234,7 @@ are bounded to be within the upper and lower bounds of the grid.
 """Update elements of A with elments from B if the index I is 1 for that element"""
 function update_A_with_B!(A, B, I)
     for i ∈ eachindex(I)
-        if I[i]==1
+        if I[i] == 1
             A[i] = B[i]
         end
     end
@@ -264,7 +266,7 @@ function MyMaxSingleBellman(b, Aₜ, lnYₜ; lbA=first(AA), ubA=last(AA), α=α)
     upperA = min(ubA, max_Ap(lnYₜ, Aₜ; α=α) - 1e-3)
     # println("\nUB: $upperA,  LB: $lbA")
     out = optimize(to_minimize, lbA, upperA)
-    maxBell = -1*out.minimum
+    maxBell = -1 * out.minimum
     maxA = out.minimizer
     return maxA, maxBell
 end
@@ -275,7 +277,7 @@ function MyMaxSingleBellman2(EV, Aₜ, lnYₜ; lbA=first(AA), ubA=last(AA), α=�
     upperA = min(ubA, max_Ap(lnYₜ, Aₜ; α=α) - 1e-3)
     # println("\nUB: $upperA,  LB: $lbA")
     out = optimize(to_minimize, lbA, upperA)
-    maxBell = -1*out.minimum
+    maxBell = -1 * out.minimum
     maxA = out.minimizer
     return maxA, maxBell
 end
@@ -307,8 +309,8 @@ end
 function MyBellmanIteration()
     # initial guess of the coefficients of the polynomial approx to the value function (zero function)
     b = zeros(6)
-    Aₜ₊₁0 = zeros(size(AA));
-    MAXIT = 2000;
+    Aₜ₊₁0 = zeros(size(AA))
+    MAXIT = 2000
     Vlist, Alist, blist = [zeros(size(AA))], [zeros(size(AA))], [b]
     for it = 1:MAXIT
         # println("b = $b")
@@ -320,10 +322,10 @@ function MyBellmanIteration()
         # Need to reshape V into a 100x7 array where the rows correspond different levels
         # of assets and the columns correspond to different levels of income.
         # need to take the dot product of each row of the array with the appropriate column of the Markov chain transition matrix
-        EV = reshape(V, nY, nA)' * GridPlnY
+        EV = reshape(V, nA, nY) * GridPlnY
 
         # update our polynomial coefficients
-        b = PolyGetCoef(AA, YY, EV'[:])
+        b = PolyGetCoef(AA, YY, EV[:])
         append!(blist, [b])
 
         # see how much our policy rule has changed
@@ -334,8 +336,8 @@ function MyBellmanIteration()
         Aₜ₊₁0 = copy(Aₜ₊₁)
         # println("mean(A) = $(mean(Aₜ₊₁)),   Var(A) = $(var(Aₜ₊₁))")
 
-        println("iteration $it, Atest = $Atest, Vtest = $Vtest, btest = $btest")
-        if Vtest < 1e-5
+        # println("iteration $it, Atest = $Atest, Vtest = $Vtest, btest = $btest")
+        if max(Atest, Vtest, btest) < 1e-5
             break
         end
     end
@@ -344,8 +346,8 @@ end
 function MyBellmanIteration2()
     # initial guess of the coefficients of the polynomial approx to the value function (zero function)
     b = zeros(6)
-    EV = Aₜ₊₁0 = zeros(size(AA));
-    MAXIT = 2000;
+    EV = Aₜ₊₁0 = zeros(size(AA))
+    MAXIT = 2000
     Vlist, Alist, blist = [zeros(size(AA))], [zeros(size(AA))], [b]
     for it = 1:MAXIT
 
@@ -387,8 +389,8 @@ end
 #=
 =#
 # Plotting maximizations of the Bellman
-x11(A,Y) = MyMaxSingleBellman(b_, A, Y)
-x11out = x11.(AA,YY)
+x11(A, Y) = MyMaxSingleBellman(b_, A, Y)
+x11out = x11.(AA, YY)
 a11 = [x[1] for x in x11out]
 v11 = [x[2] for x in x11out]
 
@@ -396,29 +398,26 @@ v11 = [x[2] for x in x11out]
 # @time Alist, Vlist, blist = MyBellmanIteration2()
 
 
-
 @time Alist, Vlist, blist = MyBellmanIteration();
+println("MyBellmanIteration Finished in $(length(blist)-1) iterations");
 Aₜ₊₁_, V_, b_ = last(Alist), last(Vlist), last(blist)
 ii = length(Vlist)
 plot(AA, Aₜ₊₁_)
 # Value Function
-surface(AA, YY, Vlist[1], camera=(-10,30), xlabel="A", ylabel="lnY", zlabel="V")
-surface(AA, YY, Vlist[2], camera=(-10,30), xlabel="A", ylabel="lnY", zlabel="V")
-surface(AA, YY, Vlist[3], camera=(-10,30), xlabel="A", ylabel="lnY", zlabel="V")
-surface(AA, YY, Vlist[10], camera=(-10,30), xlabel="A", ylabel="lnY", zlabel="V")
-surface(AA, YY, Vlist[50], camera=(-10,30), xlabel="A", ylabel="lnY", zlabel="V")
-surface(AA, YY, Vlist[100], camera=(-10,30), xlabel="A", ylabel="lnY", zlabel="V")
-surface(AA, YY, Vlist[130], camera=(-10,30), xlabel="A", ylabel="lnY", zlabel="V")
-surface(AA, YY, V_, camera=(10,20), xlabel="A", ylabel="lnY", zlabel="V")
-
-
+surface(AA, YY, Vlist[1], camera=(-10, 30), xlabel="A", ylabel="lnY", zlabel="V")
+surface(AA, YY, Vlist[2], camera=(-10, 30), xlabel="A", ylabel="lnY", zlabel="V")
+surface(AA, YY, Vlist[3], camera=(-10, 30), xlabel="A", ylabel="lnY", zlabel="V")
+surface(AA, YY, Vlist[10], camera=(-10, 30), xlabel="A", ylabel="lnY", zlabel="V")
+surface(AA, YY, Vlist[50], camera=(-10, 30), xlabel="A", ylabel="lnY", zlabel="V")
+surface(AA, YY, Vlist[100], camera=(-10, 30), xlabel="A", ylabel="lnY", zlabel="V")
+surface(AA, YY, Vlist[130], camera=(-10, 30), xlabel="A", ylabel="lnY", zlabel="V")
+surface(AA, YY, V_, camera=angle1, xlabel="A", ylabel="lnY", zlabel="V")
 
 # Policy Function
-surface(AA, YY, Aₜ₊₁_, camera=(-10,80), xlabel="A", ylabel="lnY", zlabel="A'")
+surface(AA, YY, Aₜ₊₁_, camera=angle1, xlabel="A", ylabel="lnY", zlabel="A'")
 # Consumption
 CC = c.(YY, AA, Aₜ₊₁_)
-surface(AA, YY, CC, camera=(-10,30), xlabel="A", ylabel="lnY", zlabel="C")
-surface(AA, YY, CC, camera=(-10,30), xlims=(26,28.5), xlabel="A", ylabel="lnY", zlabel="C")
+surface(AA, YY, CC, camera=angle1, xlabel="A", ylabel="lnY", zlabel="C")
 
 
 
@@ -458,7 +457,7 @@ out.minimum  # minimized function value
 
 
 ############### Direct translations of McKay's code
-
+rnd(x) = round(x, digits=4)
 """
 [V, Ap] = MaxBellman(b,Grid)
     Maximizes the RHS of the Bellman equation using golden section search
@@ -476,26 +475,32 @@ out.minimum  # minimized function value
 """
 function MaxBellman(b; α=α)
 
-    p = (sqrt(5)-1)/2
-    
+    p = (sqrt(5) - 1) / 2
+
     A = first(GridA) .* ones(size(AA))
     # f(lnYₜ, Aₜ; α=α) -> f.(lnYY, AA; α=α)
     D = min.(max_Ap.(YY, AA; α=α) .- 1e-3, last(GridA)) # -1e-3 so we always have positve consumption.
-    B = p*A .+ (1-p)*D
-    C = (1-p)*A .+ p*D
-    
+    B = p * A .+ (1 - p) * D
+    C = (1 - p) * A .+ p * D
+    Bold = copy(B)
+    Cold = copy(C)
+
     fB = Bellman(b, AA, YY, B)
     fC = Bellman(b, AA, YY, C)
-    
-    MAXIT = 1000;
+
+    MAXIT = 1000
     for it_inner = 1:MAXIT
-    
-        if all(D-A .< 1e-6)
+
+        if all(D - A .< 1e-6)
             break
         end
-    
+
         I = fB .> fC
-        
+        # I2 = B .< C
+        # println("A=$(rnd(A[end])),\tB=$(rnd(B[end])),\tC=$(rnd(C[end])),\tD=$(rnd(D[end])),\tfB=$(rnd(fB[end])),\tfC=$(rnd(fC[end])),\tfB>fC:$(I[end])")
+        # println("# of fB > fC: $(sum(I))")
+        # println("# of B < C: $(sum(I2))")
+
         # D[I] = C[I]
         update_A_with_B!(D, C, I)
         # C[I] = B[I];
@@ -503,10 +508,10 @@ function MaxBellman(b; α=α)
         # fC[I] = fB[I];
         update_A_with_B!(fC, fB, I)
         # B[I] = p*C[I] + (1-p)*A[I];
-        update_A_with_B!(B, p*C .+ (1-p)*A, I)
+        update_A_with_B!(B, p * C .+ (1 - p) * A, I)
         # fB[I] = Bellman(Par,b,Grid.KK(I),Grid.ZZ(I),B(I));
         update_A_with_B!(fB, Bellman(b, AA, YY, B), I)
-    
+
         # A(~I) = B(~I);
         update_A_with_B!(A, B, .~I)
         # B(~I) = C(~I);
@@ -514,29 +519,30 @@ function MaxBellman(b; α=α)
         # fB(~I) = fC(~I);
         update_A_with_B!(fB, fC, .~I)
         # C(~I) = p*B(~I) + (1-p)*D(~I);
-        update_A_with_B!(C, p*B .+ (1-p)*D, .~I)
+        update_A_with_B!(C, p * B .+ (1 - p) * D, .~I)
         # fC(~I) = Bellman(Par,b,Grid.KK(~I),Grid.ZZ(~I),C(~I));
-        update_A_with_B!(fC, Bellman(b, AA, YY, B), .~I)
+        update_A_with_B!(fC, Bellman(b, AA, YY, C), .~I)
     end
-    
+
     # At this stage, A, B, C, and D are all within a small epsilon of one
     # another.  We will use the average of B and C as the optimal level of
     # savings.
-    Aₜ₊₁ = (B .+ C) ./ 2;
+    Aₜ₊₁ = (B .+ C) ./ 2
+    # println("B diff: $(maximum(abs.(B-Bold))), C diff: $(maximum(abs.(C-Cold)))")
+    # display([B Bold])
 
     # Make sure that the choices of next period’s assets are bounded to 
     # be within the upper and lower bounds of the grid.
     Aₜ₊₁ = max.(Aₜ₊₁, first(GridA))  # lower bound
     Aₜ₊₁ = min.(Aₜ₊₁, last(GridA))   # upper bound
-    
-    # evaluate the Bellman equation at the optimal policy to find the new
+
+    # evaluate the Bellman equation at the optimal savings policy to find the new
     # value function.
-    V = Bellman(b, AA, YY, Aₜ₊₁);
+    V = Bellman(b, AA, YY, Aₜ₊₁)
     return V, Aₜ₊₁
 end
 
-V__ = MaxBellman(zeros(6))[2]
-A__ = MaxBellman(zeros(6))[1]
+V__, A__ = MaxBellman(zeros(6))
 
 
 
@@ -561,16 +567,14 @@ meshgrid of (A, Y ) using the surf function in Matlab.
 =#
 
 
-
-
-
 function value_function_iteration()
     # initial guess of the coefficients of the polynomial approx to the value function (zero function)
-    b = b0 = zeros(6,1)
+    b = b0 = zeros(6, 1)
 
-    Aₜ₊₁0 = zeros(size(AA)); V0 = zeros(size(AA))
+    Aₜ₊₁0 = zeros(size(AA))
+    V0 = zeros(size(AA))
     V, Aₜ₊₁ = V0, Aₜ₊₁0
-    MAXIT = 2000;
+    MAXIT = 2000
     ifinal = 0
     for it = 1:MAXIT
 
@@ -586,35 +590,38 @@ function value_function_iteration()
         b = PolyGetCoef(AA, YY, EV[:])
 
         # see how much our policy rule has changed
-        # test = maximum(abs.(Aₜ₊₁0 .- Aₜ₊₁))
-        test = maximum(abs.(V0 .- V))
-        # test = maximum(abs.(b0 .- b))
+        Atest = maximum(abs.(Aₜ₊₁0 .- Aₜ₊₁))
+        Vtest = maximum(abs.(V0 .- V))
+        btest = maximum(abs.(b0 .- b))
         b0 = b
         V0 = V
         Aₜ₊₁0 = Aₜ₊₁
         ifinal = it
-        println("mean(A) = $(mean(Aₜ₊₁)),   Var(A) = $(var(Aₜ₊₁))")
+        # println("mean(A) = $(mean(Aₜ₊₁)),   Var(A) = $(var(Aₜ₊₁))")
 
-        println("iteration $it, test = $test")
-        if test < 1e-5
+        # println("iteration $it, Vtest = $Vtest, Atest = $Atest, btest = $btest")
+        if max(Vtest, Atest, btest) < 1e-5
             break
         end
     end
-    
+
     return Dict(:Ap => Aₜ₊₁, :V => V, :b => b, :i => ifinal)
 end
 
-out = value_function_iteration()
-Ap = out[:Ap]; V = out[:V];
+@time out = value_function_iteration();
+println("value_function_iteration Finished in $(out[:i]) iterations");
+Ap2 = out[:Ap];
+V2 = out[:V];
 
-pyplot()
+
 plot(AA, Ap)
-surface(AA, YY, Ap, camera=(-160,30), xlabel="A", ylabel="lnY", zlabel="A'")
-surface(AA, YY, V, camera=(-160,30), xlabel="A", ylabel="lnY", zlabel="V")
-surface(AA, YY, c.(YY, AA, Ap), camera=(-160,30), xlabel="A", ylabel="lnY", zlabel="C")
+angle1 = (-160, 20)
+surface(AA, YY, Ap2, camera=angle1, xlabel="A", ylabel="lnY", zlabel="A'")
+surface(AA, YY, V2, camera=angle1, xlabel="A", ylabel="lnY", zlabel="V")
+surface(AA, YY, c.(YY, AA, Ap2), camera=angle1, xlabel="A", ylabel="lnY", zlabel="C")
 out[:b]
 
-[V Ap]
+[V2 Ap2]
 
 
 
@@ -624,5 +631,216 @@ out[:b]
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#==============================================================================
+                Part I
+===============================================================================
+(Optional) Implement the Howard acceleration for this problem. Report the speed improvement that
+you are able to achieve. (You will need to experiment with the number of iterations to figure out
+what works well in terms of giving a speed improvement.)
+=#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#==============================================================================
+                Part J
+===============================================================================
+Adapt McKay’s Simulate function for this problem.
+=#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#==============================================================================
+                Part K
+===============================================================================
+Using your new Simulate function, produce a 10,000 period simulation of the evolution of A, Y ,
+and C. Report a histogram of A, Y , and C. (Note: Yt not log Yt .) Report the mean and standard
+deviation of each variable. Plot the evolution of A, Y , and C over a 100 period stretch starting from
+period 1000. How do these mean values compare to the steady-state values calculated earlier?
+=#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#==============================================================================
+                Part L
+===============================================================================
+Plot consumption as a function of A for several values of Y . Do this for the entire range of A on
+your grid.
+=#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#==============================================================================
+                Part M
+===============================================================================
+Plot change in assets Y − C as a function A for several values of Y . Do this for the entire range of
+A on your grid.
+=#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#==============================================================================
+                Part N
+===============================================================================
+Plot the marginal propensity to consume as a function of A for several values of Y . Do this for
+the entire range of A on your grid. You can approximate the marginal propensity to consume as
+the extra consumption in the period that results from a windfall gain of 1 unit of A. Does this plot
+make economic sense? (Hint: It might not due to the limitations of the polynomial approximation
+methods we are using in this problem set.)
+=#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#==============================================================================
+                Part O
+===============================================================================
+(Optional) Explore how the solution method runs into trouble if you try to increase α towards 1. As
+you do this, you may want to vary the range of assets on the grid and also the polynomial basis. If
+you consider higher order polynomials than 2nd order, it may be interesting for you to plot the value
+function for a particular value of Yt as a function of At during intermediate steps in the value function
+iteration. You may start seeing cases where the value function becomes slightly non-monotonic. You
+can think about how this will lead the golden search algorithm to run into problems. (This is the
+problem that we couldn’t get around easily in writing the problem.)
+=#
 
 

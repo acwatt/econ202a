@@ -1,6 +1,10 @@
 
-import Pkg; Pkg.add(["Distributions"])
-using Distributions
+try
+    using Distributions
+catch e
+    import Pkg; Pkg.add(["Distributions"])
+    using Distributions
+end
 cdf_normal(x) = cdf(Normal(),x)
 
 """
