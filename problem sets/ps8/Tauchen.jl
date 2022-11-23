@@ -1,4 +1,3 @@
-
 try
     using Distributions
 catch e
@@ -8,7 +7,7 @@ end
 cdf_normal(x) = cdf(Normal(),x)
 
 """
-Function TAUCHEN
+Function tauchen(N,mu,rho,sigma,m)
 
     Purpose:    Finds a Markov chain whose sample paths
                 approximate those of the AR(1) process
@@ -33,34 +32,22 @@ Function TAUCHEN
         described in Ec. Letters 20 (1986) 177-181.
 """
 function tauchen(N,mu,rho,sigma,m)
-    Z     = zeros(N);
     Zprob = zeros(N,N);
     a     = (1-rho)*mu;
-    
-    Z[N]  = m * sqrt(sigma^2 / (1 - rho^2));
-    Z[1]  = -Z[N];
-    zstep = (Z[N] - Z[1]) / (N - 1);
-    
-    for i in 2:(N-1)
-        Z[i] = Z[1] + zstep * (i - 1);
-    end 
-    
-    Z = Z .+ a / (1-rho);
 
     ZN = m * sqrt(sigma^2 / (1 - rho^2))
-    Z = range(-ZN + mu, ZN + mu, length=N)
+    Z = range(-ZN + mu, ZN + mu, N)
+	zstep = Z[2]-Z[1]
     
-    for j = 1:N
-        for k = 1:N
-            if k == 1
-                Zprob[j,k] = cdf_normal((Z[1] - a - rho * Z[j] + zstep / 2) / sigma);
-            elseif k == N
-                Zprob[j,k] = 1 - cdf_normal((Z[N] - a - rho * Z[j] - zstep / 2) / sigma);
-            else
-                Zprob[j,k] = cdf_normal((Z[k] - a - rho * Z[j] + zstep / 2) / sigma) - 
-                             cdf_normal((Z[k] - a - rho * Z[j] - zstep / 2) / sigma);
-            end
-        end
+    for j ∈ 1:N, k ∈ 1:N
+		if k == 1
+			Zprob[j,k] = cdf_normal((Z[1] - a - rho * Z[j] + zstep / 2) / sigma)
+		elseif k == N
+			Zprob[j,k] = 1 - cdf_normal((Z[N] - a - rho * Z[j] - zstep / 2) / sigma)
+		else
+			Zprob[j,k] = cdf_normal((Z[k] - a - rho * Z[j] + zstep / 2) / sigma) - 
+						 cdf_normal((Z[k] - a - rho * Z[j] - zstep / 2) / sigma);
+		end
     end
     
     return Z, Zprob
