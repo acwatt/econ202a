@@ -3,7 +3,7 @@
 \graphicspath{{pics}}
 \begin{document}
 % \maketitle
-\chead{Problem Set 1}
+\chead{Problem Set 6}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                  Definitions                %
@@ -38,12 +38,171 @@
     \[A_{t+1}=R(A_t-C_t)\]
     The Bellman equation for the household's problem is
     \[V(A)=\max_{C\in[0,A]}\l\{ u(C)+\beta V(R(A-C)) \r\}\]
+
+    
+    \begin{enumerate}[label=\Alph*.]
+    \item Using Blackwell’s sufficiency conditions, prove that the Bellman operator $T$
+    \[(TV)(A) = \max_{C\in[0,A]}\l\{ u(C)+\beta V(R(A-C)) \r\}\]
+    is a contraction mapping. For simplicity, you can assume that $u(C)$ is bounded for $C\in[0,A]$. See chapter 3 of Stokey and Lucas (1989) for a discussion of the notion of a contraction mapping and Blackwell’s sufficiency conditions.
+    \end{enumerate} 
 }
 
+\newcommand{\maxc}[1]{\max_{C\in[0,A]}\l\{#1\r\}}
+\def\cstar{C^*_V}
+
 \begin{align} 
-    \intertext{stuff}
-    y&=x
+\intertext{Note that $A\in X\subset \R$ for any level of wealth, where $X$ is the space of possible wealth levels. Let $B(X)$ be the set of bounded functions $f: X\to\R$. Assuming that $u(C)$ is bounded for $C\in[0,A]$, then let's also assume that any candidate $V(A)\in B(X)$. Then our goal is to show $T$ satisfies monotonicity and discounting.}
+\intertext{For monotonicity, let $V,V'\in B(X)$ such that $V(A)\leq V'(A)\ \forall A\in X$. Then}
+    (TV)(A)&=\maxc{u(C)+\beta V(R(A-C))} \\
+        &= u(\cstar) + \beta V(R(A-\cstar))
+        \qquad\text{where }\cstar=\argmax_{C\in[0,A]}{u(C)+\beta V(R(A-C))} \\
+        &\leq u(\cstar) + \beta V'(R(A-\cstar))
+        \qquad\text{since }V\leq V' \\
+        &\leq \maxc{u(C)+\beta V'(R(A-C))}\\
+        &=(TV')(A)
+\intertext{where we can go from (3) to (4) because $\cstar$ is either the maximizing $C$ for $V'$ and (3) would be equal to (4), or it's not and (3) would be less than (4). Therefore, $T$ satisfies monotonicity.}
+\intertext{For discounting, let $a\in\R_+$, then}
+(T(V+a))(A) &= \maxc{u(C)+\beta [V(R(A-C)) + a]} \\
+    &= \maxc{u(C)+\beta V(R(A-C))} + \beta a \\
+    &= (TV)(A) + \beta a
 \end{align}
+Since $\beta$ is the discount rate, then $\beta\in(0,1)$ and $T$ satisfies the discounting condition. Thus $T$ is a contraction mapping with modulus $\beta$.
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%
+%     Part b    %
+%%%%%%%%%%%%%%%%%
+\newpage\problem{}{
+    \begin{enumerate}[label=\Alph*.]
+    \setcounter{enumi}{1}
+    \item Assume that
+    \[u(C) = \begin{cases}
+        \dfrac{C^{1-\gamma}}{1-\gamma} & \text{if }\gamma\in(0,\infty)\text{ and }\gamma\neq 1\\
+        \log C & \text{if }\gamma=1
+    \end{cases}\]
+    Let’s guess that the value function takes the form
+    \[V(A) = \begin{cases}
+        \psi\dfrac{A^{1-\gamma}}{1-\gamma} & \text{if }\gamma\in(0,\infty)\text{ and }\gamma\neq 1\\
+        \phi+\psi\log A & \text{if }\gamma=1
+    \end{cases}\]
+    Confirm that this is in fact a solution to the Bellman equation.
+    \end{enumerate} 
+}
+
+
+
+\begin{align} 
+\intertext{First, assuming $\gamma\in(0,1)\cup(1,\infty)$, we just need to show that using the $u(C)$ and $V(A)$ from above generates a solution to the Bellman equation. We need to show that there is a maximizing $C$ to the Bellman equation and that the maximizing $C$ for any $A$ is in the interval $[0,A]$. Plugging in $u(C)$ and $V(A)$ from above to the Bellman equation gives}
+\psi\dfrac{A^{1-\gamma}}{1-\gamma} 
+    &=\maxc{\dfrac{C^{1-\gamma}}{1-\gamma} + \beta\psi\dfrac{[R(A-C)]^{1-\gamma}}{1-\gamma} }
+\intertext{Let $M$ denote the maximand on the right-hand side of (9). Then the $C$ that maximizes $M$ must satisfy the first order condition:}
+0 &= \part{M}{C} \\
+    &= C^{-\gamma }-\beta R\psi(R (A-C))^{-\gamma }
+\intertext{To ensure we have a maximum, we also need to the second derivative to be negative, we can see is true from the sign of the expression below:}
+\part{^2M}{C^2}&= -\left[\gamma C^{-\gamma -1} +\beta  \gamma  R^2 \psi  (R (A-C))^{-\gamma -1}\right] <0
+\intertext{Plugging this into Mathematica, I get the solution}
+C^* &= \frac{R}{(\beta \psi R)^{1/\gamma }+R}A
+\intertext{Because the value function needs to be positive, we can assume that $\psi>0$. Then since $\beta\geq0, R\geq0$, we have}
+\frac{R}{(\beta \psi R)^{1/\gamma }+R} &\in [0,1] \implies C^*\in [0,A]
+\intertext{This holds $\forall A\geq 0$, thus the Bellman equation using our candidate $V(A)$ will always have a solution in the feasible set.}
+\intertext{Repeating this process for the $\gamma=1$ case, we have the Bellman equation}
+\phi+\psi\log A  
+    &=\maxc{\log C + \beta\phi+\beta\psi\log[R(A-C)]  }
+\intertext{Which gives the FOC}
+0 &= \part{M}{C} \\
+    &= \frac{1}{C}-\frac{\beta  \psi }{A-C}
+\intertext{Which implies a maximizing value of $C$}
+C^* &= \frac{1}{\beta  \psi +1}A\in[0,1]A
+\end{align}
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%
+%     Part c    %
+%%%%%%%%%%%%%%%%%
+\newpage\problem{}{
+    \begin{enumerate}[label=\Alph*.]
+    \setcounter{enumi}{2}
+    \item Derive the optimal policy rule
+    \[C=\psi^{-\gamma^{-1}}A\]
+    where
+    \[\psi^{-\gamma^{-1}} = 1-(\beta R^{1-\gamma})^{\gamma^{-1}}\]
+    \end{enumerate} 
+}
+
+
+
+\begin{align} 
+\intertext{From (13) in the last problem, we know that }
+C^* &= \frac{R}{(\beta \psi R)^{1/\gamma }+R}A\\
+\intertext{Noting that}
+(\beta \psi R)^{1/\gamma } &= R (\beta \psi R)^{1/\gamma }R^{-1} \\
+    &= R(\beta \psi R)^{1/\gamma }R^{-\gamma/\gamma} \\
+    &= R\psi^{1/\gamma }(\beta R)^{1/\gamma }R^{-\gamma/\gamma} \\
+    &= R\psi^{1/\gamma }(\beta R R^{-\gamma})^{1/\gamma } \\
+    &= R\psi^{1/\gamma }(\beta R^{1-\gamma})^{1/\gamma }
+\intertext{Then}
+C^* &= \frac{R}{(\beta \psi R)^{1/\gamma }+R}A\\
+    &= \frac{R}{R(\psi\beta R^{1-\gamma})^{1/\gamma }+R}A\\
+    &= \frac{1}{(\psi\beta R^{1-\gamma})^{1/\gamma }+1}A\\
+    &= \frac{1}{\psi^{1/\gamma }(\beta R^{1-\gamma})^{1/\gamma }+1}A\\
+    &= \frac{\psi^{-1/\gamma }}{(\beta R^{1-\gamma})^{1/\gamma }+\psi^{-1/\gamma }}A\\
+\intertext{Then, if $\psi^{-\gamma^{-1}} = 1-(\beta R^{1-\gamma})^{1/\gamma}$, we have}
+C^* &= \frac{\psi^{-1/\gamma }}{(\beta R^{1-\gamma})^{1/\gamma }+\psi^{-1/\gamma }}A\\
+    &= \frac{\psi^{-1/\gamma }}{(\beta R^{1-\gamma})^{1/\gamma }+1-(\beta R^{1-\gamma})^{1/\gamma}}A\\
+    &= \psi^{-1/\gamma}A
+\end{align} 
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%
+%     Part d    %
+%%%%%%%%%%%%%%%%%
+\newpage\problem{}{
+    \begin{enumerate}[label=\Alph*.]
+    \setcounter{enumi}{3}
+    \item When $\gamma=1$, the consumption rule becomes $C = (1 - \beta)A$. Why does consumption not depend on the value of the interest rate in this case? (Hint: Think about income and substitution effects)
+    \end{enumerate} 
+}
+
+
+In general, the interest rate affects the household in two ways: (1) real income grows when the interest rate increases, and (2) the net present value of savings also increases when the interest rate increases. $\gamma$ tells us which of these effects dominates the household's preferences.  
+
+$\dfrac{1}{\gamma}$ is the elasticity of intertemporal substitution, which is the percent change in consumption growth per percent increase in the net interest rate.\footnote{\url{https://en.wikipedia.org/wiki/Elasticity_of_intertemporal_substitution}} When $\gamma<1$, then $\dfrac{1}{\gamma}>1$ and consumption increases with a higher interest rate because the income effect dominates. When $\gamma>1$, intertemporal substitution dominates and savings increases with a higher interest rate. When $\gamma=1$, the income effect and intertemporal substitution effect offset each other and consumption does not depend on the interest rate.
+
+%from https://en.wikipedia.org/wiki/Elasticity_of_intertemporal_substitution
+% If the real interest rate rises, current consumption may decrease due to increased return on savings; but current consumption may also increase as the household decides to consume more immediately, as it is feeling richer
+
+
+
+
+
+
+
+
+
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -51,13 +210,229 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \section*{Problem 2}
-\problem{Problem name}{
-    Problem description
+\problem{Finite Horizon Household}{
+    Consider a household that lives for $T+1$ periods from period 0 to period $T$ and faces a consumption-savings decision. The household seeks to maximize
+    \[\sum\limits_{t=0}^T \beta^t u(C_t)\]
+    where $u'(C_t) > 0$ and $u''(C_t) < 0$. The household starts off with wealth $A_0$ and receives a constant income stream of $Y$ per period. The interest rate in the economy is $R$. The household’s budget constraint is therefore
+    \[C_t + A_{t+1}=Y + (1+R)A_t\]
+    The household is constrained to die without debt: $A_{T+1} \geq 0$. Since the problem is non-stationary (time to death varies with $t$), the value function will be different for different periods. The value function will therefore have a time subscript, i.e. $V_t(A)$.
+    
+    \begin{enumerate}[label=\Alph*.]
+    \item What is the value function for the household in period $T$?
+    \end{enumerate} 
 }
+
+
+
 \begin{align} 
-    \intertext{stuff}
-    y&=x
+    \intertext{The value function represents the net present value of the optimal stream of payoffs over this period and the rest of the household's lifetime. Because the household dies in period $T$, it would be optimal to have spent all their wealth by the end of period $T$. Therefore, the value function for the household in period $T$, which represents the net present value of the optimized current-period and future stream of payments after period $T$, must be just the utility from consuming all their wealth in the last period. All the wealth they have in the last period is just their period-$T$ income plus the interest they earn from their previous-period savings:}
+    V_T(A)&=u(Y+(1+R)A)
 \end{align}
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%
+%     Part b    %
+%%%%%%%%%%%%%%%%%
+\newpage\problem{}{
+    \begin{enumerate}[label=\Alph*.]
+    \setcounter{enumi}{1}
+    \item Write a Bellman equation for the household for $t < T$.
+    \end{enumerate} 
+}
+
+
+
+\begin{align} 
+\intertext{For the periods $t<T$, the Bellman equation for the household would be the maximized net present value of the future stream of payments. This is just the utility of consumption in this period plus the discounted value function:}
+    V_t(A_t) &= \max_{C_t,A_{t+1}}\Big\{u(C_t) + \beta V_{t+1}(A_{t+1})\Big\}
+\intertext{and including the budget constraint, we can reduce this down to just the choice of $C_t$}
+    V_t(A_t) &= \max_{C_t}\Big\{u(C_t) 
+        + \beta V_{t+1}\Big(Y-C_t + (1+R)A_t\Big)\Big\}
+\end{align}
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%
+%     Part c    %
+%%%%%%%%%%%%%%%%%
+\newpage\problem{}{
+    For the remainder of this problem, we make the simplifying assumption that $\beta(1 + R) = 1$. We want to show that the value function takes the following form
+    \[V_t(A) = \frac{1-\beta^{T-t+1}}{1-\beta}\ 
+    u\l(Y + \frac{1-\beta}{1-\beta^{T-t+1}}(1+R)A\r)\]
+    and the optimal policy rule for the household is
+    \[C_t(A)=Y+\frac{1-\beta}{1-\beta^{T-t+1}}(1+R)A\]
+    
+    \begin{enumerate}[label=\Alph*.]
+    \setcounter{enumi}{2}
+    \item Show that the value function and policy rule above are correct for $t=T$.
+    \end{enumerate} 
+}
+
+
+
+\begin{align} 
+\intertext{For $t=T$, the policy rule above simplifies to}
+    C_T(A)&= Y+\frac{1-\beta}{1-\beta^{T-T+1}}(1+R)A \\
+        &= Y+\frac{1-\beta}{1-\beta}(1+R)A \\
+        &= Y+(1+R)A \\
+\intertext{This makes sense -- in the last period, the household wants to consume all available income, both the income they earn in period $T$ (equal to $Y$) and the interest they earn on their savings (equal to $(1+R)A$).}
+\intertext{For $t=T$, the value function above simplifies to}
+    V_T(A) &= \frac{1-\beta^{T-T+1}}{1-\beta}
+        u\l(Y + \frac{1-\beta}{1-\beta^{T-T+1}}(1+R)A\r) \\
+    &= \frac{1-\beta}{1-\beta}
+        u\l(Y + \frac{1-\beta}{1-\beta}(1+R)A\r) \\
+    &= u\l(Y + (1+R)A\r) \\
+    &= u\l(C_T\r) \\
+\end{align}
+
+These both make sense for the last period consumption and value function as the household is consuming all their wealth and have no value of any periods coming after $T$.
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%
+%     Part d    %
+%%%%%%%%%%%%%%%%%
+\newpage\problem{}{
+    \begin{enumerate}[label=\Alph*.]
+    \setcounter{enumi}{3}
+    \item Use an inductive argument to show that the value function and policy rule above are correct for $t < T$. I.e., assume they are correct for $t+1$ and show that conditional on this they are correct for $t$.
+    \end{enumerate} 
+}
+
+
+
+\begin{align} 
+\intertext{To start the proof by induction, we have already shown the base case of $t=T$. Now assume that the value function and utility function hold for $t+1$. Then the policy rule for $t+1$ is}
+    C_{t+1}(A_{t+1}) &= Y+\frac{1-\beta}{1-\beta^{T-(t+1)+1}}(1+R)A_{t+1} \\
+        &= Y+\frac{1-\beta}{1-\beta^{T-t}}(1+R)A_{t+1} \\
+\intertext{Let $\gamma=\dfrac{1-\beta^{T-t}}{1-\beta}$, then}
+    C_{t+1}(A_{t+1}) &= Y+\frac{(1+R)}{\gamma}A_{t+1}
+\intertext{And the value function for $t+1$ is}
+    V_{t+1}(A_{t+1}) &= \frac{1-\beta^{T-(t+1)+1}}{1-\beta}\ 
+        u\l(Y + \frac{1-\beta}{1-\beta^{T-(t+1)+1}}(1+R)A_{t+1}\r) \\
+    &= \frac{1-\beta^{T-t}}{1-\beta}\ 
+        u\l(Y + \frac{1-\beta}{1-\beta^{T-t}}(1+R)A_{t+1}\r) \\
+    &= \gamma\ u\l(C_{t+1}(A_{t+1})\r) \\
+\intertext{From the Bellman equation, we know that}
+    V_t(A_t) &= \max_{C_t}\Big\{u(C_t) 
+        + \beta V_{t+1}(A_{t+1})\Big\} \\
+\intertext{Then the FOC for the optimal policy rule would be}
+    0 &= \part{}{C_t}[u(C_t) 
+        + \beta V_{t+1}(A_{t+1})]\\
+    \implies u'(C_t) &= -\beta V'_{t+1}(A_{t+1})\part{A_{t+1}}{C_t}
+\intertext{From the budget constraint, we know that $\part{A_{t+1}}{C_t}=-1$ so}
+    u'(C_t) &= \beta V'_{t+1}(A_{t+1}) \\
+        &= \beta \gamma\ u'\l(C_{t+1}(A_{t+1})\r)C'_{t+1}(A_{t+1}) \qquad \text{from (49)} \\
+        &= \beta \gamma\ u'\l(C_{t+1}(A_{t+1})\r)\frac{(1+R)}{\gamma} \qquad \text{from (46)}\\
+        &= u'\l(C_{t+1}(A_{t+1})\r) \qquad\text{by our simplifying assumption}
+\intertext{This implies the optimal consumption in $t$ is the same as consumption in $t+1$, which makes sense because assuming $\beta(1+R)=1$ means that the household is indifferent between consuming one unit in this period vs saving that unit and consuming $(1+R)$ units next period.}
+    C_t &= C_{t+1}(A_{t+1})
+\intertext{Plugging this into the Bellman equation (50)}
+    V_t(A_t) &= u(C_{t+1}(A_{t+1})) + \beta V_{t+1}(A_{t+1}) \\
+\intertext{Plugging in ($49$)}
+    V_t(A_t) &= u(C_{t+1}(A_{t+1})) + \beta \gamma\ u\l(C_{t+1}(A_{t+1})\r) \\
+    &= (1 + \beta \gamma)\ u\l(C_{t+1}(A_{t+1})\r) \\
+\intertext{I've shown (on paper) that }
+    (1 + \beta \gamma) &= \frac{1-\beta^{T-t+1}}{1-\beta}
+\intertext{So}
+    V_t(A_t) &= \frac{1-\beta^{T-t+1}}{1-\beta}\ u\l(C_{t+1}(A_{t+1})\r)
+\intertext{Lastly, we need to show that the optimal policy rule holds for $t$ as well. Using the budget constraint and (57), we can see that}
+    C_t &= C_{t+1}(A_{t+1}) \\
+        &= Y+\frac{(1+R)}{\gamma}A_{t+1} \\
+        &= Y+\frac{(1+R)}{\gamma}(Y+(1+R)A_t-C_t) \\
+\intertext{The terms on $C_t$ and $Y$ cancel out and we're left with}
+\implies C_t &= Y + \frac{(1+R)^2}{(\gamma+1+R)}A_t \\
+    C_t &= Y + \frac{(1+R)}{\beta(\gamma+1+R)}A_t \\
+    C_t &= Y + \frac{(1+R)}{\beta\gamma+\beta(1+R)}A_t \\
+    C_t &= Y + \frac{(1+R)}{\beta\gamma+1}A_t \\
+    C_t &= Y + \frac{1-\beta}{1-\beta^{T-t+1}}(1+R)A_t \qquad \text{from (61)}
+\end{align}
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%
+%     Part e    %
+%%%%%%%%%%%%%%%%%
+\newpage\problem{}{
+    \begin{enumerate}[label=\Alph*.]
+    \setcounter{enumi}{4}
+    \item What happens as $T\to\infty$?
+    \end{enumerate} 
+}
+
+\begin{align} 
+    \intertext{As $T\to\infty$}
+    \lim_{T\to\infty} C_t &= \lim_{T\to\infty} 
+    \l[ Y + \frac{1-\beta}{1-\beta^{T-t+1}}(1+R)A_t\r] \\
+    &= Y +\lim_{T\to\infty} 
+    \l[\frac{1-\beta}{1-\beta^{T-t+1}}(1+R)A_t\r] \\
+    &= Y +(1-\beta)(1+R)A_t \\
+    &= Y +(1+R-\beta(1+R))A_t \\
+    &= Y +RA_t
+\end{align}
+
+Since this holds for all $t$, in each period, the household consumes all their income plus all the interest they earned on their savings. This means that they keep $A_0$ and never grow their savings.
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%
+%     Part f    %
+%%%%%%%%%%%%%%%%%
+\newpage\problem{}{
+    \begin{enumerate}[label=\Alph*.]
+    \setcounter{enumi}{5}
+    \item (Optional) I have posted matlab code (adapted from code originally written by Peter Maxted\footnote{\url{https://scholar.harvard.edu/maxted/research_code}}) on bCourses that numerically solves the problem described above using a similar backward-induction procedure. The \texttt{PS2-partf.m} program solves 4 different versions of this problem, which can each be run by simply changing the variable \texttt{step = 1, 2, 3, 4}. Descriptions of these cases and how to switch between them can be found in the comments of the file. These different versions vary the numbers of periods $T$, interest rates $R$ and utility functions $u(\cdot)$. The program then graphs the numeric approximation and analytic solution found in parts A through E of this problem.
+    \vspace{1em}
+    Please use this code to answer the following questions: Qualitatively, under what wealth and time $(A, t)$ conditions does the numerical solution approximate the analytic solution well (\texttt{step = 1})? Are the conditions the same for the value function and the consumption policy function? Does increasing the number of periods $T$ improve the numerical approximation (\texttt{step = 2})? Does changing the utility function from log-utility $log(c)$ to isoelastic utility
+    $\dfrac{c^{1-\rho}-1}{1-\rho}$ with $\rho = 0.5$ improve or worsen the fit (\texttt{step = 3})? What effect does lowering the interest rate $R$, while still maintaining that $(1+R)\beta = 1$, have on the shape of the value function and consumption policy function (\texttt{step = 4})?
+    \end{enumerate} 
+}
+
+
+Did not finish this, but was in the process of translating the matlab code to Juila code.
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -66,117 +441,65 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \section*{Problem 3}
-\problem{Problem name}{
-    Problem description
+\problem{Optimal Stopping Problem:}{
+    Each period a worker draws a job offer from a uniform distribution with support in the unit interval: $x \sim U[0, 1]$. The worker can either accept the offer and realize a net present value of $x$ or wait for another period and draw again. The problem ends when the worker accepts an offer. The worker discounts the future at a rate $\beta$ per period.
+    
+    \begin{enumerate}[label=\Alph*.]
+    \item Write down a Bellman equation for this problem.
+    \end{enumerate} 
 }
 
-\begin{align} 
-    \intertext{stuff}
-    y&=x
-\end{align}
+Didn't finish any of problem 3
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                Problem 4                    %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
-\section*{Problem 4}
-\problem{Problem name}{
-    Problem description
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%
+%     Part b    %
+%%%%%%%%%%%%%%%%%
+\newpage\problem{}{
+    \begin{enumerate}[label=\Alph*.]
+    \setcounter{enumi}{1}
+    \item Using Blackwell’s conditions, show that the Bellman operator is a contraction mapping.
+    \end{enumerate} 
 }
 
-\begin{align} 
-    \intertext{stuff}
-    y&=x
-\end{align}
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                Problem 5                    %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
-\section*{Problem 5}
-\problem{Problem name}{
-    Problem description
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%
+%     Part c    %
+%%%%%%%%%%%%%%%%%
+\newpage\problem{}{
+    \begin{enumerate}[label=\Alph*.]
+    \setcounter{enumi}{2}
+    \item Starting with a guess $V_0(x) = 1$, analytically iterate on the Bellman operator to show that
+    \[V(x) = \begin{cases}
+        x^* &\text{if }x\leq x^*\\
+        x   &\text{if }x> x^*
+    \end{cases}\]
+    where
+    \[x^* = \beta^{-1}(1-\sqrt{1-\beta^2})\]
+    Hint: Each iteration will give rise to a cutoff value for $x$. Let’s denote the cutoff in iteration $n$ as $x_n^*$. Derive a condition that relates the cutoff value $x_n^*$ to the cutoff value in the previous iteration $x_{n-1}^*$. Solve for a fixed point of this dynamic equation.
+    \end{enumerate} 
 }
 
-\begin{align} 
-    \intertext{stuff}
-    y&=x
-\end{align}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                Problem 6                    %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section*{Problem 6}
-\problem{Problem name}{
-    Problem description
-}
-
-\begin{align} 
-    \intertext{stuff}
-    y&=x
-\end{align}
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                Problem 7                    %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section*{Problem 7}
-\problem{Problem name}{
-    Problem description
-}
-
-\begin{align} 
-    \intertext{stuff}
-    y&=x
-\end{align}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                Problem 8                    %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section*{Problem 8}
-\problem{Problem name}{
-    Problem description
-}
-
-\begin{align} 
-    \intertext{stuff}
-    y&=x
-\end{align}
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                Problem 9                    %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section*{Problem 9}
-\problem{Problem name}{
-    Problem description
-}
-
-\begin{align} 
-    \intertext{stuff}
-    y&=x
-\end{align}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                Problem 10                   %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section*{Problem 10}
-\problem{Problem name}{
-    Problem description
-}
-
-\begin{align} 
-    \intertext{stuff}
-    y&=x
-\end{align}
 
 
 
