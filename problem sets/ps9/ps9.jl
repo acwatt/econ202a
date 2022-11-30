@@ -1,8 +1,8 @@
 #=
-File: ps8-main.jl
+File: ps9.jl
 Author: Aaron C Watt
-Date: 2022-11-10
-Purpose: Solve problems from 202AFall2022PS8.pdf
+Date: 2022-11-20
+Purpose: Solve problems from 202AFall2022PS9.pdf
 
 References:
 https://alisdairmckay.com/Notes/NumericalCrashCourse/FuncApprox.html
@@ -11,7 +11,8 @@ https://alisdairmckay.com/Notes/NumericalCrashCourse/index.html
 Expectations:
 https://quantecon.github.io/Expectations.jl/dev/
 
-Final version in ps8-notebook.jl
+Optimization:
+https://julianlsolvers.github.io/Optim.jl/stable/
 =#
 
 #==============================================================================
@@ -20,16 +21,17 @@ Final version in ps8-notebook.jl
 import Pkg
 Pkg.activate(pwd())
 try
-    using Optim, Parameters, Plots, Revise, DataFrames, Interpolations
+    using Optim, Parameters, Plots, Revise, DataFrames, Interpolations, Distributions, Random
     using Optim: maximum, maximizer
     pyplot()
 catch e
-    Pkg.add(["Plots", "PyPlot", "Optim", "Parameters", "Revise", "DataFrames", "Interpolations"])
-    using Optim, Parameters, Plots, Revise, DataFrames, Interpolations
+    Pkg.add(["Plots", "PyPlot", "Optim", "Parameters", "Revise", "DataFrames", "Interpolations", "Distributions", "Random"])
+    using Optim, Parameters, Plots, Revise, DataFrames, Interpolations, Distributions, Random
     using Optim: maximum, maximizer
     pyplot()
 end
-includet("Tauchen.jl")  # Installs Distributions if not installed
+includet("Tauchen.jl")
+
 
 
 
@@ -110,7 +112,7 @@ necessary here.
 
 # Create a grid for lnY
 NY = 7;  # number of points in our grid for lnY
-NstdY = 2;  # number of standard deviations to cover with the grid
+NstdY = 4;  # number of standard deviations to cover with the grid
 # Note that we need to use log(μ) due to the formula used in tauchen()
 GridlnY, GridPY = tauchen(NY, log(μ), ρ, σ, NstdY)
 GridY = ℯ.^GridlnY
@@ -224,9 +226,9 @@ end
 """Vector Bellman function when Unemployed this period"""
 function BellmanU(EVe::AbstractArray, EVu::AbstractArray, Aₜ::AbstractArray, Aₜ₊₁::AbstractArray)
     # UNEMPLOYED: vector A', lnY=bb, EVe, EVu
-    C = c.(bb, Aₜ, Aₜ₊₁)
+    C = c.(log(bb), Aₜ, Aₜ₊₁)
     # Interpolate EVe and EVu at Aₜ₊₁, lnYₜ
-    lnYₜ = repeat([bb], length(Aₜ))
+    lnYₜ = repeat([log(bb)], length(Aₜ))
     EVe2 = interpolate_EV(EVe, lnYₜ, Aₜ₊₁)
     EVu2 = interpolate_EV(EVu, lnYₜ, Aₜ₊₁)
     # P(emp | unemp) = q; P(unemp | unemp) = 1-q
@@ -238,9 +240,9 @@ end
 """
 function BellmanU(EVe::Function, EVu::Function, Aₜ::Real, Aₜ₊₁::Real)
     # UNEMPLOYED: vector A', lnY=bb, EVe, EVu
-    C = c(bb, Aₜ, Aₜ₊₁)
+    C = c(log(bb), Aₜ, Aₜ₊₁)
     # P(emp | unemp) = q; P(unemp | unemp) = 1-q
-    Vu = U(C) + β*( q*EVe(Aₜ₊₁, bb) + (1-q)*EVu(Aₜ₊₁, bb) )
+    Vu = U(C) + β*( q*EVe(Aₜ₊₁, log(bb)) + (1-q)*EVu(Aₜ₊₁, log(bb)) )
     return Vu
 end
 
@@ -316,7 +318,7 @@ function MyMaxSingleBellmanU(EVe, EVu, Aₜ)
     to_maximize(Aₜ₊₁) = BellmanU(EVe, EVu, Aₜ, Aₜ₊₁)
     # Want there to be >0 consumption, so put upper bound
     # at maximum A' that results in C>0, given lnYₜ=bb, Aₜ
-    upperA = min(GridA_upper, max_Ap(bb, Aₜ) - 1e-3)
+    upperA = min(GridA_upper, max_Ap(log(bb), Aₜ) - 1e-3)
     # Find the maximizing Aₜ₊₁ for Aₜ, lnYₜ=bb
     out = maximize(to_maximize, GridA_lower, upperA)
     V = maximum(out)
@@ -419,23 +421,28 @@ function MyBellmanIteration(; verbose=true)
     return Velist, Vulist, Aelist, Aulist
 end
 
-outH = @time MyBellmanIteration();
-VeH = outH[1][end]; VuH = outH[2][end]; ApeH = outH[3][end]; ApuH = outH[4][end];
+RUNH = false
+if RUNH
+    outH = @time MyBellmanIteration();
+    VeH = outH[1][end]; VuH = outH[2][end]; ApeH = outH[3][end]; ApuH = outH[4][end];
+end
 
-angle0 = (-45,30)
-plotargs = (camera=(-45, 20), xlabel="Y", ylabel="A",
-            legend=:none, aspect_ratio=[1,1,2])
-pVe_H = surface(exp.(YY), AA, VeH, zlabel="Ve"; plotargs...)
-pVu_H = surface(exp.(YY), AA, VuH, zlabel="Vu"; plotargs...)
-pApe_H = surface(exp.(YY), AA, ApeH, zlabel="Ape"; plotargs...)
-pApu_H = surface(exp.(YY), AA, ApuH, zlabel="Apu"; plotargs...)
-pCe_H = surface(exp.(YY), AA, c.(YY, AA, ApeH), zlabel="Ce"; plotargs...)
-pCu_H = surface(exp.(YY), AA, c.(bb, AA, ApuH), zlabel="Cu"; plotargs...)
+PLOTH = false
+if PLOTH
+    angle0 = (-45,30)
+    plotargs = (camera=(-45, 20), xlabel="Y", ylabel="A",
+                legend=:none, aspect_ratio=[1,1,2])
+    pVe_H = surface(exp.(YY), AA, VeH, zlabel="Ve"; plotargs...)
+    pVu_H = surface(exp.(YY), AA, VuH, zlabel="Vu"; plotargs...)
+    pApe_H = surface(exp.(YY), AA, ApeH, zlabel="Ape"; plotargs...)
+    pApu_H = surface(exp.(YY), AA, ApuH, zlabel="Apu"; plotargs...)
+    pCe_H = surface(exp.(YY), AA, c.(YY, AA, ApeH), zlabel="Ce"; plotargs...)
+    pCu_H = surface(exp.(YY), AA, c.(log(bb), AA, ApuH), zlabel="Cu"; plotargs...)
 
-pH1 = plot(pVe_H, pVu_H, pApe_H, pApu_H, pCe_H, pCu_H, 
-    layout=(3,2), size=(800, 1600))
-savefig(pH1, "H-all_$GridA_upper")
-
+    pH1 = plot(pVe_H, pVu_H, pApe_H, pApu_H, pCe_H, pCu_H, 
+        layout=(3,2), size=(800, 1600))
+    savefig(pH1, "H-all_$GridA_upper")
+end
 
 
 
@@ -520,22 +527,26 @@ function MyFasterBellmanIteration(; inner_mod = 32, verbose=false)
 end
 
 # warm up function (precompile)
-@time MyFasterBellmanIteration(inner_mod=100);
+outI = @time MyFasterBellmanIteration();
+VeI = outI[1][end]; VuI = outI[2][end]; ApeI = outI[3][end]; ApuI = outI[4][end];
+
 
 # Find which modulo for the bellman A' maximization results in shortest time
-mods = 10:100
-f(x::Real) = @elapsed @time MyFasterBellmanIteration(inner_mod=x; verbose=false);
-f(x::AbstractArray) = @elapsed MyFasterBellmanIteration(inner_mod=x[1]; verbose=false);
-times = f.(mods)
-mintime0, minidx = findmin(times)
-minmod = mods[minidx]
+if 1==0
+    mods = 10:100
+    f(x::Real) = @elapsed @time MyFasterBellmanIteration(inner_mod=x; verbose=false);
+    f(x::AbstractArray) = @elapsed MyFasterBellmanIteration(inner_mod=x[1]; verbose=false);
+    times = f.(mods)
+    mintime0, minidx = findmin(times)
+    minmod = mods[minidx]
 
-# Compare to unaccelerated iteration
-mintime1 = @elapsed MyBellmanIteration();
-multiplier = round(mintime1 / mintime0, digits=2)
-println("Howard acceleration with mod $minmod resulted in $multiplier times faster convergence")
+    # Compare to unaccelerated iteration
+    mintime1 = @elapsed MyBellmanIteration();
+    multiplier = round(mintime1 / mintime0, digits=2)
+    println("Howard acceleration with mod $minmod resulted in $multiplier times faster convergence")
 
-plot(mods,times, xlabel="inner modulo", ylabel="time to converge (s)")
+    plot(mods,times, xlabel="inner modulo", ylabel="time to converge (s)")
+end
 
 # out = maximize(to_maximize, GridA_lower, upperA)
 # outI = optimize(f, 10, 100)
@@ -566,59 +577,77 @@ Adapt McKay’s Simulate function for this problem.
 =#
 
 struct SimReturn
-    Ap
-    A
-    Y
-    C
+    Ap # Assets at beginning of next period
+    A  # Assets at beginning of period
+    Ytilde # Employment Income
+    Y  # Income = labor income*X + unemp income *(1-X)
+    C  # Consumption
+    X  # employment
 end
 
+
+# Define probability distributions for employment next period
+distE = Binomial(1, 1-p)  # if emp this period, 1-p Prob of being emp next period
+distU = Binomial(1, q)    # if unemp this period, q Prob of being emp next period
+
+"""Return employment status next period X' based on employment status this period X"""
+function employment_next(X)
+    Xp = X==1 ? rand(distE, 1)[1] : rand(distU, 1)[1]
+    return Xp
+end
+
+
 """
-Sim = Simulate(bKp, Mode, T)
+Sim = Simulate(ApeI, ApuI, Mode, T)
     Simulates the model.
     Inputs:
-    bKp       Polynomial coefficients for polynomial for Kp policy rule
+    ApeI      Estimated A' emplyed policy rule (interpolated function of Aₜ, lnYₜ)
+    ApuI      Estimated A' unemployed policy rule (interpolated function of Aₜ, lnYₜ)
     Mode      Mode = 'random' -> draw shocks
               Mode = 'irf'    -> impulse response function
     T         # of periods to simulate
 """
-function Simulate(bAp, Mode, T; α=α)
-    A = zeros(T); Y = zeros(T)
-    A[1] = Aₛₛ
-    
+function Simulate(Ape, Apu, Mode, T)
+    Random.seed!(123);
+    A = zeros(T)  # Assets
+    Ytilde = zeros(T)  # Employment income
+    Y = zeros(T)  # Realized Income (employed or not)
+    X = zeros(T)  # Employment status {0,1}
+    A[1] = mean(GridA)
+    X[1] = 1  # Start employed
+
     if Mode == "irf"
-        Y[1] = σ
+        Ytilde[1] = σ
         ε = zeros(T)
     elseif Mode == "random"
-        Y[1] = 0
+        Ytilde[1] = log(μ)
         ε = σ * randn(T)
     else
         throw("Unrecognized Mode $Mode in Simulate()");
     end
-    
-    Ap1 = PolyBasis(A[1:(T-1)], Y[1:(T-1)]) * bAp
-    # display(sum(Ap1 .> max_Ap.(Y[1:(T-1)], A[1:(T-1)])))
-    # A[2:T] = min.(Ap1, max_Ap.(Y[1:(T-1)], A[1:(T-1)]))
-
 
     for t ∈ 2:T
-        Aptemp = (PolyBasis(A[t-1], Y[t-1]) * bAp)[1]
-        Apmax = max_Ap(Y[t-1], A[t-1])
-        # A[t] = min(Aptemp, Apmax)
-        # println(Apmax<Aptemp)
-        A[t] = (PolyBasis(A[t-1], Y[t-1]) * bAp)[1]
-        Y[t] = lnY(Y[t-1], ε[t]) 
+        # println("t=$t, A = $(A[t-1]), Y = $(Y[t-1]), X = $(X[t-1])")
+        # Employed?
+        X[t] = employment_next(X[t-1])
+        # Labor income
+        Ytilde[t] = lnY(Ytilde[t-1], ε[t])
+        # Realized income (considering unemployment)
+        Y[t] = X[t]*Ytilde[t] + (1-X[t])*log(bb)
+        # Realized Assets
+        ApFunc = X[t]==1 ? Ape : Apu
+        A[t] = max(ApFunc(A[t-1], Y[t-1]), 0)  # Aₜ ≥ 0
     end
     
     # Compute quantities from state variables
     Ti = 2:(T-1)
-    Ap2 = A[Ti .+ 1]
+    Ap = A[Ti .+ 1]
     A = A[Ti]
+    Ytilde = Ytilde[Ti]
     Y = Y[Ti]
-    # Y = f(Par,A,Y) - (1-δ) * A;
-    C = c.(Y, A, Ap2; α=α)
+    C = c.(Y, A, Ap)
 
-    return SimReturn(Ap2, A, Y, C)
-    
+    return SimReturn(Ap, A, Ytilde, Y, C, X)
 end
 
 
@@ -637,64 +666,57 @@ end
 #==============================================================================
                 Part K
 ===============================================================================
-Using your new Simulate function, produce a 10,000 period simulation of the evolution of A, Y ,
-and C. Report a histogram of A, Y , and C. (Note: Yt not log Yt .) Report the mean and standard
-deviation of each variable. Plot the evolution of A, Y , and C over a 100 period stretch starting from
-period 1000. How do these mean values compare to the steady-state values calculated earlier?
+Using your new Simulate function, produce a 10,000 period simulation of the evolution of A, Ỹ , C,
+and employment status for a single household. Report a histogram of A, Y , and C. Report the mean
+and standard deviation of each variable. Plot the evolution of A, Y , and C over a 100 period stretch
+starting from period 1000. (Note that I am asking you to report Y , not Ỹ .)
 =#
+# Compare output from different value function iteration methods
+# Ape_diff = maximum(abs.(ApeI .- ApeH))
+# Apu_diff = maximum(abs.(ApuI .- ApuH))
+# Ap_diff = maximum(abs.(ApeI .- ApuI))
+# Converged within 1e-5 tolerance. let's use ApeI and ApuI
 
-bAp2 = PolyGetCoef(AA, YY, Ap2)
-nPeriods = 10000
-@time SimK = Simulate(bAp2, "random", nPeriods);
+# Generate interpolated A' functions of Ape and Apu
+ApeFunc(A, lnY) = interpolate_EV(ApeI)(A, lnY)
+ApuFunc(A, lnY) = interpolate_EV(ApuI)(A, lnY)
+# surface(exp.(YY), AA, ApeFunc.(AA, YY), zlabel="ApeFunc"; plotargs...)
+# surface(exp.(YY), AA, ApuFunc.(AA, YY), zlabel="ApuFunc"; plotargs...)
 
-# Report a histogram of A, Y , and C. (Note: Yt not log Yt .) 
-hk1 = histogram(SimK.A, title="A", label="", xlims=(61,64))
-hk2 = histogram(ℯ.^SimK.Y, title="Y", label="")
-hk3 = histogram(SimK.C, title="C", label="", xlims=(31,35))
-hk4 = plot(hk1, hk2, hk3, layout=(1,3))
-savefig(hk4, "K-histograms")
+# Simulate
+nPeriods = 10_000
+@time SimK = Simulate(ApeFunc, ApuFunc, "random", nPeriods);
 
 # Report the mean and standard deviation of each variable. 
 varsk = ["A", "Y", "C"]
 meansk = mean.([SimK.A, ℯ.^SimK.Y, SimK.C])
 sdk = std.([SimK.A, ℯ.^SimK.Y, SimK.C])
 
+# Report a histogram of A, Y , and C. (Note: Yt not log Yt .) 
+hk1 = histogram(SimK.A, title="A", label="") #, xlims=(61,64)
+annotate!(hk1, [(0.7*maximum(SimK.A), 800, "Mean=$(round(meansk[1], digits=2))"),
+                (0.7*maximum(SimK.A), 700, " StD=$(round(sdk[1], digits=2))")])
+hk2 = histogram(ℯ.^SimK.Y, title="Y", label="")
+annotate!(hk2, [(0.7*maximum(ℯ.^SimK.Y), 1500, "Mean=$(round(meansk[2], digits=2))"),
+                (0.7*maximum(ℯ.^SimK.Y), 1300, " StD=$(round(sdk[2], digits=2))")])
+hk3 = histogram(SimK.C, title="C", label="") #, xlims=(31,35)
+annotate!(hk3, [(0.7*maximum(SimK.C), 800, "Mean=$(round(meansk[3], digits=2))"),
+                (0.7*maximum(SimK.C), 700, " StD=$(round(sdk[3], digits=2))")])
+hk4 = plot(hk1, hk2, hk3, layout=(1,3))
+savefig(hk4, "K-histograms")
+
+
 # Plot the evolution of A, Y , and C over a 100 period stretch starting from period 1000
 periods = 1000:1100
 pk1 = plot(periods, SimK.A[periods], ylabel="A", label="")
 pk2 = plot(periods, (ℯ.^SimK.Y)[periods], ylabel="Y", label="")
+hline!(pk2, [bb], label="unemp. income")
 pk3 = plot(periods, SimK.C[periods], ylabel="C", xlabel="Period", label="")
 pk4 = plot(pk1, pk2, pk3, layout=(3,1))
 savefig(pk4, "K-evolutions")
 
-# How do these mean values compare to the steady-state values calculated earlier?
-# A comparison
-Adiffk = meansk[1] - Aₛₛ
-# Y comparison
-Ydiffk = meansk[2] - μ
-# C comparison
-Cdiffk = meansk[3] - c(μ, Aₛₛ, Aₛₛ)
-diffs = [Adiffk, Ydiffk, Cdiffk]
-oldmeans = [Aₛₛ, μ, c(μ, Aₛₛ, Aₛₛ)]
-stddiffs = [Adiffk/Aₛₛ*100, Ydiffk/μ*100, Cdiffk/c(μ, Aₛₛ, Aₛₛ)*100]
-dfk = DataFrame(Variable = varsk, 
-                Mean = meansk, 
-                StdDev = sdk, 
-                SteadStateValues = oldmeans, 
-                DiffFromSS = diffs,
-                StdDiff = stddiffs)
-dfk
 
 
-#=
-The mean of income (Y) is pretty close to the given mean of 1 in the problem setup,
-only about 2.4% higher.
-The mean of assets (A) in the simulation is somewhat larger than the steady state value --
-about 12 units above the steady state value, which is about 24.7% higher.
-The mean of consumption (C) in the simulation is a bit lower than the
-consumption implied by the mean income μ and the steady state asset level --
-the mean from the simulation is about 11% below the steady state level.
-=#
 
 
 
@@ -717,38 +739,44 @@ the mean from the simulation is about 11% below the steady state level.
 #==============================================================================
                 Part L
 ===============================================================================
-Plot consumption as a function of A for several values of Y . Do this for the entire range of A on
-your grid.
-
-I think this has nothing to do with the simulation...
+Plot consumption as a function of A for several values of Ỹ. Do this for the a 
+range of values for A that encompasses most of the mass in the histogram you 
+report in part K. On the same figure, also plot consumption when unemployed as 
+a function of A. Do this for the average value of Ỹ .
 =#
 
+# hLY1 = histogram(ℯ.^SimK.Ytilde, title="ỹ", label="")
+# hLY2 = histogram(ℯ.^SimK.Y, title="y", label="")
+# hLY3 = plot(hLY1, hLY2, layout=(1,2))
+
+# Generate values of Ỹ to plot for
+YmeanL = mean(ℯ.^SimK.Ytilde); YsdL = std(ℯ.^SimK.Ytilde);
+Yvals = range(GridY[1], YmeanL + 2*YsdL, 7)
+
+# Generate Consumption at values
+cLe(A, lnY) = c(lnY, A, ApeFunc(A, lnY))  # employed
+cLu(A) = c(log(bb), A, ApuFunc(A, log(bb)))  # unemployed
+CL = [[cLe(a, log(y)) for a in GridA, y in Yvals] cLu.(GridA)]
+
 # PLOT USING A' APPROXIMATION
-bAp2 = PolyGetCoef(AA, YY, Ap2)
-cL(A, lnY) = c(lnY, A, (PolyBasis(A, lnY) * bAp2)[1])
-labelsL = "log(Y) = " .* string.(round.(GridY', digits=3))
-linestylesL = [:solid :dot :solid :dot :solid :dot :solid]
-pL1 = plot(reshape(cL.(AA, YY), NA, NY),
+labelsL = "(Employed)   Y = " .* string.(round.(Yvals, digits=3)')
+labelsL = [labelsL ["(Unemployed) Y = $bb"]]
+linestylesL = [:solid :dot :solid :dot :solid :dot :solid :solid]
+linecolorsL = [repeat([:auto], outer=(1,7)) [:grey]]
+linewidthsL = [repeat([:auto], outer=(1,7)) [2]]
+pL1 = plot(GridA, CL,
      label=labelsL,
      linestyle=linestylesL,
-     legend=:none,
+     linecolor=linecolorsL,
+     linewidth=linewidthsL,
+     legend=:bottomright,
+     xlims=(0,150),
      xlabel="Assets at beginning of period",
-     ylabel="Consumption")
-
-# PLOT USING NEW C APPROXIMATION (and underlying A' approximation in cL())
-bC = PolyGetCoef(AA, YY, cL.(AA, YY))
-CL = PolyBasis(AA, YY)*bC
-pL2 = plot(reshape(CL, NA, NY),
-     label=labelsL,
-     linestyle=linestylesL,
-     legend=:topleft,
-     xlabel="Assets at beginning of period",
-     ylabel="")
+     ylabel="Consumption",
+     title="Consumption vs Assets using interpolated A' functions")
+savefig(pL1, "L-consumption")
 
 
-pL3 = plot(pL1, pL2, layout=(1,2),
-        title=[" "^30*"Consumption - A' vs C poly approximation" ""])
-savefig(pL3, "L-consumption")
 
 
 
@@ -770,29 +798,24 @@ savefig(pL3, "L-consumption")
 #==============================================================================
                 Part M
 ===============================================================================
-Plot change in assets Y − C as a function A for several values of Y. 
-Do this for the entire range of A on your grid.
+Plot change in assets Y − C when employed as a function A for several values of Ỹ . Do this
+for the same range of values for A as part L. On the same figure, also plot change in assets when
+unemployed as a function of A. Do this for the average value of Ỹ .
 =#
 
 # PLOT USING A' APPROXIMATION
-pM1 = plot(reshape(ℯ.^YY .- cL.(AA, YY), NA, NY),
+YM = [reshape(ℯ.^YY, NA, NY) repeat([bb], NA)]
+
+pM1 = plot(GridA, YM .- CL,
      label=labelsL,
      linestyle=linestylesL,
-     legend=:none,
+     linecolor=linecolorsL,
+     linewidth=linewidthsL,
+     legend=:topright,
+     xlims=(0,150),
      xlabel="Assets at beginning of period",
-     ylabel="Y - C")
-
-# PLOT USING NEW C APPROXIMATION (and underlying A' approximation in cL())
-pM2 = plot(reshape(ℯ.^YY .- CL, NA, NY),
-     label=labelsL,
-     linestyle=linestylesL,
-     legend=:bottomleft,
-     xlabel="Assets at beginning of period",
-     ylabel="")
-
-pM3 = plot(pM1, pM2, layout=(1,2),
-    title=[" "^20*"Change in Assets - A' vs C poly approximation" ""])
-savefig(pM3, "M-changeinassets")
+     ylabel="Y - C", title="Change in Assets")
+savefig(pM1, "M-changeinassets")
 
 
 
@@ -813,38 +836,35 @@ savefig(pM3, "M-changeinassets")
 #==============================================================================
                 Part N
 ===============================================================================
-Plot the marginal propensity to consume as a function of A for several values of Y . Do this for
-the entire range of A on your grid. You can approximate the marginal propensity to consume as
-the extra consumption in the period that results from a windfall gain of 1 unit of A. Does this plot
-make economic sense? (Hint: It might not due to the limitations of the polynomial approximation
-methods we are using in this problem set.)
+Plot the marginal propensity to consume when employed as a function of A for 
+several values of Ỹ. On the same figure, also plot the marginal propensity to
+consume when unemployed as a function of A (again for the average value of Ỹ ).
+Do this for the entire range of A on your grid. You can approximate the marginal
+propensity to consume as the extra consumption in the period that results from
+a windfall gain of 1 unit of A.
 =#
 
-# PLOT USING A' APPROXIMATION (Swooshy MPC)
-MPC1 = cL.(AA .+ 1, YY) .- cL.(AA, YY)
-pN1 = plot(reshape(MPC1, NA, NY),
+# Get index of points that will be inside the domain after shifting up by one
+idxGridA_inside = findall(GridA_lower .<= GridA .+1 .<= GridA_upper)
+# Filter previous consumption matrix to just those rows
+CL_inside = CL[idxGridA_inside, :]
+# Generate new consumption matrix for the shifted up grid
+GridA_inside = GridA[idxGridA_inside]
+GridA_shift = GridA_inside .+ 1
+CN = [[cLe(a, log(y)) for a in GridA_shift, y in Yvals] cLu.(GridA_shift)]
+# PLOT USING A' APPROXIMATION on smaller subset of GridA
+MPC = CN .- CL_inside
+pN1 = plot(GridA_inside, MPC,
      label=labelsL,
      linestyle=linestylesL,
-     legend=:none,
-    #  title="Marginal Propensity to Consume based on optimal asset policy",
+     linecolor=linecolorsL,
+     linewidth=linewidthsL,
+     legend=:topright,
+     xlims=(0,150), ylims=(0, maximum(MPC)),
+     title="Marginal Propensity to Consume from optimal asset policy",
      xlabel="Assets at beginning of period",
      ylabel="Marginal Propensity to Consume")
-
-# PLOT USING NEW C APPROXIMATION (Straight line MPC)
-CN = PolyBasis(AA .+ 1, YY) * bC
-MPC2 = PolyBasis(AA .+ 1, YY) * bC .- PolyBasis(AA, YY) * bC
-pN2 = plot(reshape(MPC2, NA, NY),
-     label=labelsL,
-     linestyle=linestylesL,
-     legend=:bottomright,
-    #  title="Marginal Propensity to Consume",
-     xlabel="Assets at beginning of period",
-    #  ylabel="MPC"
-     )
-
-pN3 = plot(pN1, pN2, layout=(1,2),
-            title=[" "^40*"MPC - A' vs C poly approximation" ""])
-savefig(pN3, "N-mpc")
+savefig(pN1, "N-mpc")
 
 
 #=
@@ -877,13 +897,7 @@ https://alisdairmckay.com/Notes/NumericalCrashCourse/VFI.html#results
 #==============================================================================
                 Part O
 ===============================================================================
-(Optional) Explore how the solution method runs into trouble if you try to increase α towards 1. As
-you do this, you may want to vary the range of assets on the grid and also the polynomial basis. If
-you consider higher order polynomials than 2nd order, it may be interesting for you to plot the value
-function for a particular value of Yt as a function of At during intermediate steps in the value function
-iteration. You may start seeing cases where the value function becomes slightly non-monotonic. You
-can think about how this will lead the golden search algorithm to run into problems. (This is the
-problem that we couldn’t get around easily in writing the problem.)
+No need to explore how accuracy depends on polynomial basis.
 =#
 
 
